@@ -20,7 +20,6 @@ final class MainRouter: BaseRouter {
 
     static func showSettingsViewController(in navigationController: UINavigationController) {
         let viewController = ViewControllerFactory.makeSettingsViewController()
-//        navigationController.navigationBar.isHidden = true
         viewController.modalPresentationStyle = .formSheet
         if let sheet = viewController.sheetPresentationController {
             sheet.detents = [.large()]

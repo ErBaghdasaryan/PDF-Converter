@@ -48,11 +48,7 @@ extension HistoryViewController {
     @objc func openSettings() {
         guard let navigationController = self.navigationController else { return }
 
-//        if Apphud.hasActiveSubscription() {
-//            SettingsRouter.showUpdatePaymentViewController(in: navigationController)
-//        } else {
-            MainRouter.showPaymentViewController(in: navigationController)
-//        }
+        MainRouter.showSettingsViewController(in: navigationController)
     }
 
     private func setupNavigationItems() {
