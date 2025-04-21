@@ -1,0 +1,681 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CCC80FF82DB0F64E008186D1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CCC80FF72DB0F64E008186D1 /* SnapKit */; };
+		CCC80FFD2DB0F658008186D1 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = CCC80FFC2DB0F658008186D1 /* SQLite */; };
+		CCC810002DB0F664008186D1 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = CCC80FFF2DB0F664008186D1 /* Swinject */; };
+		CCC810052DB0F670008186D1 /* SwinjectAutoregistration in Frameworks */ = {isa = PBXBuildFile; productRef = CCC810042DB0F670008186D1 /* SwinjectAutoregistration */; };
+		CCC8100A2DB0F6BC008186D1 /* PDFConverterModel in Frameworks */ = {isa = PBXBuildFile; productRef = CCC810092DB0F6BC008186D1 /* PDFConverterModel */; };
+		CCC8100C2DB0F6BC008186D1 /* PDFConverterViewModel in Frameworks */ = {isa = PBXBuildFile; productRef = CCC8100B2DB0F6BC008186D1 /* PDFConverterViewModel */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CCC80FD72DB0F52B008186D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CCC80FB82DB0F529008186D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCC80FBF2DB0F529008186D1;
+			remoteInfo = PDFConverter;
+		};
+		CCC80FE12DB0F52B008186D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CCC80FB82DB0F529008186D1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCC80FBF2DB0F529008186D1;
+			remoteInfo = PDFConverter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CCC80FC02DB0F529008186D1 /* PDFConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCC80FD62DB0F52B008186D1 /* PDFConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCC80FE02DB0F52B008186D1 /* PDFConverterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFConverterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCC80FF42DB0F59A008186D1 /* PDFConverterModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PDFConverterModel; sourceTree = "<group>"; };
+		CCC80FF52DB0F5D9008186D1 /* PDFConverterViewModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PDFConverterViewModel; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CCC80FE82DB0F52B008186D1 /* Exceptions for "PDFConverter" folder in "PDFConverter" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CCC80FBF2DB0F529008186D1 /* PDFConverter */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CCC80FC22DB0F529008186D1 /* PDFConverter */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CCC80FE82DB0F52B008186D1 /* Exceptions for "PDFConverter" folder in "PDFConverter" target */,
+			);
+			path = PDFConverter;
+			sourceTree = "<group>";
+		};
+		CCC80FD92DB0F52B008186D1 /* PDFConverterTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PDFConverterTests;
+			sourceTree = "<group>";
+		};
+		CCC80FE32DB0F52B008186D1 /* PDFConverterUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PDFConverterUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CCC80FBD2DB0F529008186D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC80FFD2DB0F658008186D1 /* SQLite in Frameworks */,
+				CCC8100C2DB0F6BC008186D1 /* PDFConverterViewModel in Frameworks */,
+				CCC80FF82DB0F64E008186D1 /* SnapKit in Frameworks */,
+				CCC810002DB0F664008186D1 /* Swinject in Frameworks */,
+				CCC8100A2DB0F6BC008186D1 /* PDFConverterModel in Frameworks */,
+				CCC810052DB0F670008186D1 /* SwinjectAutoregistration in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC80FD32DB0F52B008186D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC80FDD2DB0F52B008186D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CCC80FB72DB0F529008186D1 = {
+			isa = PBXGroup;
+			children = (
+				CCC80FF52DB0F5D9008186D1 /* PDFConverterViewModel */,
+				CCC80FF42DB0F59A008186D1 /* PDFConverterModel */,
+				CCC80FC22DB0F529008186D1 /* PDFConverter */,
+				CCC80FD92DB0F52B008186D1 /* PDFConverterTests */,
+				CCC80FE32DB0F52B008186D1 /* PDFConverterUITests */,
+				CCC810082DB0F6BC008186D1 /* Frameworks */,
+				CCC80FC12DB0F529008186D1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CCC80FC12DB0F529008186D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CCC80FC02DB0F529008186D1 /* PDFConverter.app */,
+				CCC80FD62DB0F52B008186D1 /* PDFConverterTests.xctest */,
+				CCC80FE02DB0F52B008186D1 /* PDFConverterUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CCC810082DB0F6BC008186D1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CCC80FBF2DB0F529008186D1 /* PDFConverter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCC80FE92DB0F52B008186D1 /* Build configuration list for PBXNativeTarget "PDFConverter" */;
+			buildPhases = (
+				CCC80FBC2DB0F529008186D1 /* Sources */,
+				CCC80FBD2DB0F529008186D1 /* Frameworks */,
+				CCC80FBE2DB0F529008186D1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CCC80FC22DB0F529008186D1 /* PDFConverter */,
+			);
+			name = PDFConverter;
+			packageProductDependencies = (
+				CCC80FF72DB0F64E008186D1 /* SnapKit */,
+				CCC80FFC2DB0F658008186D1 /* SQLite */,
+				CCC80FFF2DB0F664008186D1 /* Swinject */,
+				CCC810042DB0F670008186D1 /* SwinjectAutoregistration */,
+				CCC810092DB0F6BC008186D1 /* PDFConverterModel */,
+				CCC8100B2DB0F6BC008186D1 /* PDFConverterViewModel */,
+			);
+			productName = PDFConverter;
+			productReference = CCC80FC02DB0F529008186D1 /* PDFConverter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CCC80FD52DB0F52B008186D1 /* PDFConverterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCC80FEE2DB0F52B008186D1 /* Build configuration list for PBXNativeTarget "PDFConverterTests" */;
+			buildPhases = (
+				CCC80FD22DB0F52B008186D1 /* Sources */,
+				CCC80FD32DB0F52B008186D1 /* Frameworks */,
+				CCC80FD42DB0F52B008186D1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CCC80FD82DB0F52B008186D1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CCC80FD92DB0F52B008186D1 /* PDFConverterTests */,
+			);
+			name = PDFConverterTests;
+			packageProductDependencies = (
+			);
+			productName = PDFConverterTests;
+			productReference = CCC80FD62DB0F52B008186D1 /* PDFConverterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CCC80FDF2DB0F52B008186D1 /* PDFConverterUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCC80FF12DB0F52B008186D1 /* Build configuration list for PBXNativeTarget "PDFConverterUITests" */;
+			buildPhases = (
+				CCC80FDC2DB0F52B008186D1 /* Sources */,
+				CCC80FDD2DB0F52B008186D1 /* Frameworks */,
+				CCC80FDE2DB0F52B008186D1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CCC80FE22DB0F52B008186D1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CCC80FE32DB0F52B008186D1 /* PDFConverterUITests */,
+			);
+			name = PDFConverterUITests;
+			packageProductDependencies = (
+			);
+			productName = PDFConverterUITests;
+			productReference = CCC80FE02DB0F52B008186D1 /* PDFConverterUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CCC80FB82DB0F529008186D1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					CCC80FBF2DB0F529008186D1 = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					CCC80FD52DB0F52B008186D1 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = CCC80FBF2DB0F529008186D1;
+					};
+					CCC80FDF2DB0F52B008186D1 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = CCC80FBF2DB0F529008186D1;
+					};
+				};
+			};
+			buildConfigurationList = CCC80FBB2DB0F529008186D1 /* Build configuration list for PBXProject "PDFConverter" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CCC80FB72DB0F529008186D1;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CCC80FF62DB0F64E008186D1 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				CCC80FFB2DB0F658008186D1 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				CCC80FFE2DB0F664008186D1 /* XCRemoteSwiftPackageReference "Swinject" */,
+				CCC810032DB0F670008186D1 /* XCRemoteSwiftPackageReference "SwinjectAutoregistration" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CCC80FC12DB0F529008186D1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CCC80FBF2DB0F529008186D1 /* PDFConverter */,
+				CCC80FD52DB0F52B008186D1 /* PDFConverterTests */,
+				CCC80FDF2DB0F52B008186D1 /* PDFConverterUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CCC80FBE2DB0F529008186D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC80FD42DB0F52B008186D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC80FDE2DB0F52B008186D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CCC80FBC2DB0F529008186D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC80FD22DB0F52B008186D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC80FDC2DB0F52B008186D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CCC80FD82DB0F52B008186D1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCC80FBF2DB0F529008186D1 /* PDFConverter */;
+			targetProxy = CCC80FD72DB0F52B008186D1 /* PBXContainerItemProxy */;
+		};
+		CCC80FE22DB0F52B008186D1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCC80FBF2DB0F529008186D1 /* PDFConverter */;
+			targetProxy = CCC80FE12DB0F52B008186D1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CCC80FEA2DB0F52B008186D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PDFConverter/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "PDF Converter";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = q.PDFConverter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		CCC80FEB2DB0F52B008186D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PDFConverter/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "PDF Converter";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = q.PDFConverter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		CCC80FEC2DB0F52B008186D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CCC80FED2DB0F52B008186D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CCC80FEF2DB0F52B008186D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = q.PDFConverterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PDFConverter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PDFConverter";
+			};
+			name = Debug;
+		};
+		CCC80FF02DB0F52B008186D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = q.PDFConverterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PDFConverter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PDFConverter";
+			};
+			name = Release;
+		};
+		CCC80FF22DB0F52B008186D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = q.PDFConverterUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PDFConverter;
+			};
+			name = Debug;
+		};
+		CCC80FF32DB0F52B008186D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = q.PDFConverterUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PDFConverter;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CCC80FBB2DB0F529008186D1 /* Build configuration list for PBXProject "PDFConverter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC80FEC2DB0F52B008186D1 /* Debug */,
+				CCC80FED2DB0F52B008186D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCC80FE92DB0F52B008186D1 /* Build configuration list for PBXNativeTarget "PDFConverter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC80FEA2DB0F52B008186D1 /* Debug */,
+				CCC80FEB2DB0F52B008186D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCC80FEE2DB0F52B008186D1 /* Build configuration list for PBXNativeTarget "PDFConverterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC80FEF2DB0F52B008186D1 /* Debug */,
+				CCC80FF02DB0F52B008186D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCC80FF12DB0F52B008186D1 /* Build configuration list for PBXNativeTarget "PDFConverterUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC80FF22DB0F52B008186D1 /* Debug */,
+				CCC80FF32DB0F52B008186D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CCC80FF62DB0F64E008186D1 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		CCC80FFB2DB0F658008186D1 /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+		CCC80FFE2DB0F664008186D1 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
+		CCC810032DB0F670008186D1 /* XCRemoteSwiftPackageReference "SwinjectAutoregistration" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/SwinjectAutoregistration";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CCC80FF72DB0F64E008186D1 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC80FF62DB0F64E008186D1 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		CCC80FFC2DB0F658008186D1 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC80FFB2DB0F658008186D1 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+		CCC80FFF2DB0F664008186D1 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC80FFE2DB0F664008186D1 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+		CCC810042DB0F670008186D1 /* SwinjectAutoregistration */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC810032DB0F670008186D1 /* XCRemoteSwiftPackageReference "SwinjectAutoregistration" */;
+			productName = SwinjectAutoregistration;
+		};
+		CCC810092DB0F6BC008186D1 /* PDFConverterModel */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PDFConverterModel;
+		};
+		CCC8100B2DB0F6BC008186D1 /* PDFConverterViewModel */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PDFConverterViewModel;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CCC80FB82DB0F529008186D1 /* Project object */;
+}
