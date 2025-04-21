@@ -17,4 +17,15 @@ final class MainRouter: BaseRouter {
         viewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(viewController, animated: true)
     }
+
+    static func showSettingsViewController(in navigationController: UINavigationController) {
+        let viewController = ViewControllerFactory.makeSettingsViewController()
+//        navigationController.navigationBar.isHidden = true
+        viewController.modalPresentationStyle = .formSheet
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        navigationController.present(viewController, animated: true)
+    }
 }
