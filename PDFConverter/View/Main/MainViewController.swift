@@ -12,6 +12,7 @@ import SnapKit
 class MainViewController: BaseViewController {
 
     var viewModel: ViewModel?
+    var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,17 +24,43 @@ class MainViewController: BaseViewController {
 
         self.view.backgroundColor = .white
 
+        let mylayout = UICollectionViewFlowLayout()
+        mylayout.itemSize = CGSize(width: 70, height: 90)
+        mylayout.scrollDirection = .vertical
+        mylayout.minimumLineSpacing = 12
+        mylayout.minimumInteritemSpacing = 12
 
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: mylayout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor(hex: "#F9F9F9")
+        collectionView.layer.masksToBounds = true
+        collectionView.layer.cornerRadius = 12
+
+        collectionView.register(MainCollectionViewCell.self)
+        collectionView.register(SettingsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SettingsHeaderView")
+        collectionView.isScrollEnabled = true
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
+
+        self.view.addSubview(collectionView)
         setupConstraints()
         setupNavigationItems()
     }
 
     override func setupViewModel() {
         super.setupViewModel()
+        self.viewModel?.loadData()
+        self.collectionView.reloadData()
     }
 
     func setupConstraints() {
-
+        collectionView.snp.makeConstraints { view in
+            view.top.equalToSuperview().offset(124)
+            view.leading.equalToSuperview().offset(16)
+            view.trailing.equalToSuperview().inset(16)
+            view.bottom.equalToSuperview()
+        }
     }
 
 }
@@ -43,6 +70,65 @@ extension MainViewController {
     
     private func makeButtonsAction() {
 
+    }
+
+    private func calculateOverallIndex(for indexPath: IndexPath) -> Int {
+        var overallIndex = 0
+
+        for section in 0..<indexPath.section {
+            overallIndex += viewModel?.mainItems[section].count ?? 0
+        }
+
+        overallIndex += indexPath.row
+
+        return overallIndex
+    }
+
+    private func tappedCell(from index: Int) {
+        switch index {
+        case 0:
+            print("Word to PDF")
+        case 1:
+            print("Exel to PDF")
+        case 2:
+            print("PDF")
+        case 3:
+            print("PDF to txt")
+        case 4:
+            print("Join")
+        case 5:
+            print("Image to PDF")
+        case 6:
+            print("Point to PDF")
+        case 7:
+            print("Split")
+        case 8:
+            print("Word to PDF")
+        case 9:
+            print("Exel to PDF")
+        case 10:
+            print("PDF")
+        case 11:
+            print("PDF to DOC")
+        case 12:
+            print("Join")
+        case 13:
+            print("Image to PDF")
+        case 14:
+            print("PPT to PDF")
+        case 15:
+            print("Split")
+        case 16:
+            print("JPEG to PDF")
+        case 17:
+            print("TXT to Image")
+        case 18:
+            print("PNG to PDF")
+        case 19:
+            print("HFIF to PDF")
+        default:
+            break
+        }
     }
 
     @objc func openSettings() {
@@ -84,6 +170,51 @@ extension MainViewController {
 extension MainViewController: IViewModelableController {
     typealias ViewModel = IMainViewModel
 }
+
+extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return self.viewModel?.sections.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let count = self.viewModel?.mainItems[section].count ?? 0
+        return self.viewModel?.mainItems[section].count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: MainCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+        if let item = self.viewModel?.mainItems[indexPath.section][indexPath.row] {
+            cell.setup(model: item)
+        }
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 76, height: 95)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SettingsHeaderView", for: indexPath) as! SettingsHeaderView
+            if let model = self.viewModel?.sections[indexPath.section] {
+                header.configure(with: model)
+                return header
+            }
+        }
+        return UICollectionReusableView()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 46)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let overallIndex = calculateOverallIndex(for: indexPath)
+        self.tappedCell(from: overallIndex)
+    }
+}
+
 
 //MARK: Preview
 import SwiftUI

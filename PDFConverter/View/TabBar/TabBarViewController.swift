@@ -30,12 +30,18 @@ class TabBarViewController: UITabBarController {
         mainViewController.delegate = self
         historyViewController.delegate = self
 
+        NotificationCenter.default.addObserver(self, selector: #selector(setPageToFirst), name: Notification.Name("setPageToMain"), object: nil)
+
         setupCameraButton()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateTabBarBorderLayer()
+    }
+
+    @objc func setPageToFirst() {
+        self.selectedIndex = 0
     }
 
     private func createNavigation(title: String, image: String, vc: UIViewController) -> UINavigationController {

@@ -145,7 +145,7 @@ extension SettingsViewController {
 
         let bottomView = UIView()
 
-        bottomView.backgroundColor = UIColor(hex: "#5F6E85")
+        bottomView.backgroundColor = UIColor(hex: "#D4DAE1")
         cell.contentView.addSubview(bottomView)
         bottomView.snp.makeConstraints { view in
             view.bottom.equalToSuperview()

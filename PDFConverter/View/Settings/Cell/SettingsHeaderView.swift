@@ -15,7 +15,7 @@ class SettingsHeaderView: UICollectionReusableView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
-        label.font = UIFont(name: "SFProText-Semibold", size: 18)
+        label.font = UIFont(name: "SFProText-Bold", size: 18)
         return label
     }()
 
@@ -40,6 +40,15 @@ class SettingsHeaderView: UICollectionReusableView {
             titleLabel.text = "Settings"
         case .share:
             titleLabel.text = "Share"
+        }
+    }
+
+    func configure(with model: MainSection) {
+        switch model {
+        case .popular:
+            titleLabel.text = "Popular"
+        case .other:
+            titleLabel.text = "Other conversions"
         }
     }
 }
