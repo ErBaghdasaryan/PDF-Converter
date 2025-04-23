@@ -39,7 +39,9 @@ final class ViewControllerFactory {
 
     //MARK: - TabBar
     static func makeTabBarViewController() -> TabBarViewController {
+        let assembler = Assembler(commonAssemblies + [TabBarAssembly()])
         let viewController = TabBarViewController()
+        viewController.viewModel = assembler.resolver.resolve(ITabBarViewModel.self)
         return viewController
     }
 

@@ -11,6 +11,7 @@ import PDFConverterModel
 public protocol IHistoryViewModel {
     var savedFiles: [SavedFilesModel] { get set }
     func loadFiles()
+    func deleteSavedFile(by id: Int)
 }
 
 public class HistoryViewModel: IHistoryViewModel {
@@ -24,10 +25,18 @@ public class HistoryViewModel: IHistoryViewModel {
     }
 
     public func loadFiles() {
-//        do {
-//            self.savedMusics = try self.historyService.getAllSavedMusics()
-//        } catch {
-//            print(error)
-//        }
+        do {
+            self.savedFiles = try self.historyService.getAllSavedFiles()
+        } catch {
+            print(error)
+        }
+    }
+
+    public func deleteSavedFile(by id: Int) {
+        do {
+            try self.historyService.deleteSavedFile(by: id)
+        } catch {
+            print(error)
+        }
     }
 }

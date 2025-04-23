@@ -8,8 +8,11 @@
 import UIKit
 import PDFConverterViewModel
 import SnapKit
+import PDFKit
 
 class TabBarViewController: UITabBarController {
+
+    var viewModel: ViewModel?
 
     private let cameraButton = UIButton(type: .system)
     private let borderLayer = CAShapeLayer()
@@ -17,6 +20,31 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupViewControllers()
+        setupCameraButton()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateTabBarBorderLayer()
+    }
+
+    // MARK: - Deinit
+    deinit {
+        #if DEBUG
+        print("deinit \(String(describing: self))")
+        #endif
+    }
+}
+
+extension TabBarViewController: IViewModelableController {
+    typealias ViewModel = ITabBarViewModel
+}
+
+//MARK: Setups
+extension TabBarViewController {
+
+    private func setupViewControllers() {
         lazy var mainViewController = self.createNavigation(title: "Main",
                                                             image: "main",
                                                             vc: ViewControllerFactory.makeMainViewController())
@@ -31,17 +59,6 @@ class TabBarViewController: UITabBarController {
         historyViewController.delegate = self
 
         NotificationCenter.default.addObserver(self, selector: #selector(setPageToFirst), name: Notification.Name("setPageToMain"), object: nil)
-
-        setupCameraButton()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateTabBarBorderLayer()
-    }
-
-    @objc func setPageToFirst() {
-        self.selectedIndex = 0
     }
 
     private func createNavigation(title: String, image: String, vc: UIViewController) -> UINavigationController {
@@ -90,10 +107,45 @@ class TabBarViewController: UITabBarController {
             view.top.equalTo(self.tabBar.snp.top).offset(-12)
         }
     }
+}
+
+//MARK: Navigation & TabBar Hidden
+extension TabBarViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if viewController.hidesBottomBarWhenPushed {
+            self.tabBar.isHidden = true
+        } else {
+            self.tabBar.isHidden = false
+        }
+    }
+}
+
+//MARK: ImagePicker
+extension TabBarViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            if let pdfURL = image.toPDF() {
+//                let document = PDFDocument(url: pdfURL)
+
+                self.viewModel?.addSavedFile(.init(pdfURL: pdfURL, type: .imageToPDF))
+            }
+        }
+
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: Functionality
+extension TabBarViewController {
 
     @objc private func openCamera() {
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-            print("Камера недоступна на устройстве.")
+            print("Camera is not found.")
             return
         }
 
@@ -131,38 +183,8 @@ class TabBarViewController: UITabBarController {
         borderLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
     }
 
-    // MARK: - Deinit
-    deinit {
-        #if DEBUG
-        print("deinit \(String(describing: self))")
-        #endif
-    }
-}
-
-//MARK: Navigation & TabBar Hidden
-extension TabBarViewController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if viewController.hidesBottomBarWhenPushed {
-            self.tabBar.isHidden = true
-        } else {
-            self.tabBar.isHidden = false
-        }
-    }
-}
-
-//MARK: ImagePicker
-extension TabBarViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
-            print("Выбрано изображение: \(image)")
-        }
-
-        picker.dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+    @objc func setPageToFirst() {
+        self.selectedIndex = 0
     }
 }
 

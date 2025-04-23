@@ -12,6 +12,7 @@ public protocol IMainViewModel {
     var mainItems: [[MainItem]] { get set }
     var sections: [MainSection] { get set }
     func loadData()
+    func addSavedFile(_ model: SavedFilesModel)
 }
 
 public class MainViewModel: IMainViewModel {
@@ -27,5 +28,13 @@ public class MainViewModel: IMainViewModel {
 
     public func loadData() {
         self.mainItems = self.mainService.getMainItems()
+    }
+
+    public func addSavedFile(_ model: SavedFilesModel) {
+        do {
+            _ = try self.mainService.addSavedFile(model)
+        } catch {
+            print(error)
+        }
     }
 }

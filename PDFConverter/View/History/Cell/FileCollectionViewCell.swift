@@ -7,27 +7,24 @@
 import UIKit
 import SnapKit
 import Combine
+import PDFConverterModel
+import PDFKit
 
 class FileCollectionViewCell: UICollectionViewCell, IReusableView {
 
     private let cyrcleView = UIView()
-    private let firstImage = UIImageView()
-    private let secondImage = UIImageView()
-    private let titleLabel = UILabel(text: "Key",
-                                     textColor: .white,
+    private let image = UIImageView()
+    private let titleLabel = UILabel(text: "",
+                                     textColor: UIColor(hex: "#22242C")!,
                                      font: UIFont(name: "SFProText-Bold", size: 16))
+    private let subTitleLabel = UILabel(text: "",
+                                     textColor: UIColor(hex: "#22242C")!,
+                                     font: UIFont(name: "SFProText-Regular", size: 12))
+    private let pagesCount = UILabel(text: "",
+                                     textColor: UIColor(hex: "#5F6E85")!,
+                                     font: UIFont(name: "SFProText-Regular", size: 12))
 
-    private let deleteButton = UIButton(type: .system)
-    public let deleteTapped = PassthroughSubject<Void, Never>()
-    var cancellables = Set<AnyCancellable>()
-
-    var collectionView: UICollectionView!
-    private var collectionViewData: [String] = []
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        cancellables.removeAll()
-    }
+    private var document: PDFDocument?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,138 +37,114 @@ class FileCollectionViewCell: UICollectionViewCell, IReusableView {
     }
 
     private func setupUI() {
-        backgroundColor = UIColor(hex: "#1E1E1E")?.withAlphaComponent(0.7)
-        layer.cornerRadius = 16
+        backgroundColor = UIColor(hex: "#F9F9F9")
+        layer.cornerRadius = 12
 
-        cyrcleView.layer.cornerRadius = 45
-        cyrcleView.layer.borderColor = UIColor.white.cgColor
-        cyrcleView.layer.borderWidth = 1
+        cyrcleView.backgroundColor = .white
+        cyrcleView.layer.cornerRadius = 32
 
-        self.firstImage.layer.masksToBounds = true
-        self.firstImage.layer.cornerRadius = 12
-        self.firstImage.contentMode = .scaleAspectFill
+        self.image.layer.masksToBounds = true
+        self.image.layer.cornerRadius = 12
+        self.image.contentMode = .scaleAspectFill
 
-        self.secondImage.layer.masksToBounds = true
-        self.secondImage.layer.cornerRadius = 12
-        self.secondImage.contentMode = .scaleAspectFill
+        self.titleLabel.textAlignment = .left
+        self.subTitleLabel.textAlignment = .left
+        self.pagesCount.textAlignment = .right
 
-        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
-        deleteButton.tintColor = .white
-
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-
-//        let layout = LeftAlignedCollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        layout.minimumLineSpacing = 12
-//        layout.minimumInteritemSpacing = 12
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//
-//        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.showsHorizontalScrollIndicator = false
-//        collectionView.backgroundColor = .clear
-//
-//        collectionView.register(SubGenreCollectionViewCell.self)
-//        collectionView.backgroundColor = .clear
-//        collectionView.isScrollEnabled = true
-//        collectionView.isUserInteractionEnabled = false
-
-        collectionView.delegate = self
-        collectionView.dataSource = self
-
-        contentView.addSubview(cyrcleView)
-        contentView.addSubview(firstImage)
-        contentView.addSubview(secondImage)
+        contentView.addSubview(image)
         contentView.addSubview(titleLabel)
-        contentView.addSubview(deleteButton)
-        contentView.addSubview(collectionView)
+        contentView.addSubview(subTitleLabel)
+        contentView.addSubview(cyrcleView)
+        contentView.addSubview(pagesCount)
         setupConstraints()
     }
 
     private func setupConstraints() {
 
-        cyrcleView.snp.makeConstraints { view in
-            view.top.equalToSuperview().offset(15)
-            view.leading.equalToSuperview().offset(18)
-            view.height.equalTo(90)
-            view.width.equalTo(90)
-        }
-
-        firstImage.snp.makeConstraints { view in
-            view.top.equalToSuperview().offset(12)
-            view.leading.equalToSuperview().offset(12)
-            view.height.equalTo(72)
-            view.width.equalTo(72)
-        }
-
-        secondImage.snp.makeConstraints { view in
-            view.top.equalToSuperview().offset(36)
-            view.leading.equalToSuperview().offset(41)
-            view.height.equalTo(72)
-            view.width.equalTo(72)
+        image.snp.makeConstraints { view in
+            view.top.equalToSuperview()
+            view.leading.equalToSuperview()
+            view.height.equalTo(65)
+            view.width.equalTo(65)
         }
 
         titleLabel.snp.makeConstraints { view in
-            view.top.equalToSuperview().offset(12)
-            view.leading.equalTo(secondImage.snp.trailing).offset(16)
-            view.trailing.equalToSuperview().inset(40)
+            view.top.equalToSuperview().offset(14)
+            view.leading.equalTo(image.snp.trailing).offset(12)
+            view.trailing.equalToSuperview().inset(105)
             view.height.equalTo(18)
         }
 
-        deleteButton.snp.makeConstraints { view in
-            view.centerY.equalTo(titleLabel)
-            view.trailing.equalToSuperview().inset(12)
-            view.width.height.equalTo(20)
+        subTitleLabel.snp.makeConstraints { view in
+            view.top.equalTo(titleLabel.snp.bottom).offset(4)
+            view.leading.equalTo(image.snp.trailing).offset(12)
+            view.trailing.equalToSuperview().inset(105)
+            view.height.equalTo(14)
         }
 
-        collectionView.snp.makeConstraints { view in
-            view.top.equalTo(titleLabel.snp.bottom).offset(12)
-            view.leading.equalTo(secondImage.snp.trailing).offset(16)
-            view.trailing.equalToSuperview().inset(12)
-            view.bottom.equalToSuperview().inset(12)
+        cyrcleView.snp.makeConstraints { view in
+            view.top.equalToSuperview().offset(30)
+            view.leading.equalTo(subTitleLabel.snp.trailing).offset(46)
+            view.height.equalTo(65)
+            view.width.equalTo(95)
+        }
+
+        pagesCount.snp.makeConstraints { view in
+            view.bottom.equalToSuperview().inset(8)
+            view.trailing.equalToSuperview().inset(8)
+            view.height.equalTo(14)
         }
     }
 
-    func configure(firstImage: String, secondImage: String, title: String, data: [String]) {
-        if firstImage == "Prompt" && secondImage == "Generation" {
-            self.firstImage.image = UIImage(named: "Ambient")
-            self.secondImage.image = UIImage(named: "Epic Score")
-        } else {
-            self.firstImage.image = UIImage(named: firstImage)
-            self.secondImage.image = UIImage(named: secondImage)
+    func configure(model: SavedFilesModel) {
+        switch model.type {
+        case .wordToPDF:
+            image.image = UIImage(named: "WordToPDF")
+            self.titleLabel.text = "Word to PDF"
+            self.subTitleLabel.text = "Today"
+        case .exelToPDF:
+            image.image = UIImage(named: "ExelToPDF")
+            self.titleLabel.text = "Exel to PDF"
+            self.subTitleLabel.text = "Today"
+        case .pdf:
+            image.image = UIImage(named: "PDF")
+            self.titleLabel.text = "PDF"
+            self.subTitleLabel.text = "Today"
+        case .pdfToText:
+            image.image = UIImage(named: "PDFtoText")
+            self.titleLabel.text = "PDF to Text"
+            self.subTitleLabel.text = "Today"
+        case .join:
+            image.image = UIImage(named: "Join")
+            self.titleLabel.text = "Join"
+            self.subTitleLabel.text = "Today"
+        case .imageToPDF:
+            image.image = UIImage(named: "ImageToPDF")
+            self.titleLabel.text = "Image to PDF"
+            self.subTitleLabel.text = "Today"
+        case .pointToPdf:
+            image.image = UIImage(named: "PointToPDF")
+            self.titleLabel.text = "Point to PDF"
+            self.subTitleLabel.text = "Today"
+        case .split:
+            image.image = UIImage(named: "Split")
+            self.titleLabel.text = "Split"
+            self.subTitleLabel.text = "Today"
+        case .pdfToDoc:
+            image.image = UIImage(named: "PDFtoDOC")
+            self.titleLabel.text = "PDF to DOC"
+            self.subTitleLabel.text = "Today"
+        case .signature:
+            image.image = UIImage(named: "signature")
+            self.titleLabel.text = "Signature"
+            self.subTitleLabel.text = "Today"
+        default:
+            break
         }
-        self.titleLabel.text = title
-        self.collectionViewData = data
-        self.collectionView.reloadData()
-    }
 
-    @objc private func deleteButtonTapped() {
-        deleteTapped.send()
+        self.document = PDFDocument(url: model.pdfURL)
+        let pagesCount: Int = document?.pageCount ?? 0
+        self.pagesCount.text = "\(pagesCount) pages"
     }
 }
 
-extension FileCollectionViewCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionViewData.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell: SubGenreCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-//
-//        cell.setup(with: collectionViewData[indexPath.row])
-//
-//        return cell
-        return UICollectionViewCell()
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let text = collectionViewData[indexPath.row]
-        let font = UIFont(name: "SFProText-Regular", size: 15) ?? UIFont.systemFont(ofSize: 15)
-
-        let textWidth = text.size(withAttributes: [.font: font]).width
-
-        return CGSize(width: textWidth + 16, height: 28)
-    }
-}

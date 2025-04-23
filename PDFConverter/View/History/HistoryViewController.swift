@@ -13,7 +13,7 @@ class HistoryViewController: BaseViewController {
 
     var viewModel: ViewModel?
     private let header = UILabel(text: "Last",
-                                 textColor: UIColor.white,
+                                 textColor: UIColor.black,
                                  font: UIFont(name: "SFProText-Bold", size: 18))
     var collectionView: UICollectionView!
 
@@ -63,6 +63,8 @@ class HistoryViewController: BaseViewController {
 
     override func setupViewModel() {
         super.setupViewModel()
+//        self.viewModel?.loadFiles()
+//        self.collectionView.reloadData()
     }
 
     func setupConstraints() {
@@ -88,46 +90,72 @@ class HistoryViewController: BaseViewController {
 extension HistoryViewController {
     
     private func makeButtonsAction() {
-
+        
     }
-
+    
     @objc func openSettings() {
         guard let navigationController = self.navigationController else { return }
-
+        
         MainRouter.showSettingsViewController(in: navigationController)
     }
-
+    
     private func setupNavigationItems() {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "getPro"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 110, height: 32)
         button.addTarget(self, action: #selector(getProSubscription), for: .touchUpInside)
-
+        
         let button1 = UIButton(type: .custom)
         button1.setImage(UIImage(named: "mainSetttings"), for: .normal)
         button1.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
         button1.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-
+        
         let proButton = UIBarButtonItem(customView: button)
         let leftButton = UIBarButtonItem(customView: button1)
         navigationItem.leftBarButtonItem = leftButton
-
+        
         navigationItem.rightBarButtonItem = proButton
-
+        
     }
-
+    
     @objc func getProSubscription() {
         guard let navigationController = self.navigationController else { return }
-
-//        if Apphud.hasActiveSubscription() {
-//            SettingsRouter.showUpdatePaymentViewController(in: navigationController)
-//        } else {
-            MainRouter.showPaymentViewController(in: navigationController)
-//        }
+        
+        //        if Apphud.hasActiveSubscription() {
+        //            SettingsRouter.showUpdatePaymentViewController(in: navigationController)
+        //        } else {
+        MainRouter.showPaymentViewController(in: navigationController)
+        //        }
     }
-
+    
     private func setPageToMain() {
         NotificationCenter.default.post(name: Notification.Name("setPageToMain"), object: nil, userInfo: nil)
+    }
+    
+    private func deletePDF(by index: Int) {
+        guard let id = self.viewModel?.savedFiles[index].id else { return }
+
+        self.viewModel?.deleteSavedFile(by: id)
+        self.viewModel?.loadFiles()
+        self.collectionView.reloadData()
+    }
+
+    private func share(by index: Int) {
+        guard let pdfURL = self.viewModel?.savedFiles[index].pdfURL else { return }
+
+        let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
+
+        if let popoverController = activityViewController.popoverPresentationController,
+           let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+            popoverController.sourceView = window
+            popoverController.sourceRect = CGRect(x: window.frame.width / 2,
+                                                  y: window.frame.height,
+                                                  width: 0,
+                                                  height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        self.present(activityViewController, animated: true)
     }
 }
 
@@ -157,27 +185,48 @@ extension HistoryViewController: UICollectionViewDataSource, UICollectionViewDel
             self.header.isHidden = false
 
             let cell: FileCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-            if let model = self.viewModel?.savedFiles[indexPath.row] {
-                cell.configure(firstImage: model.genre,
-                               secondImage: model.subGenre,
-                               title: "\(model.genre) + \(model.subGenre)",
-                               data: [model.genre, model.subGenre, model.duration])
-            }
 
-            cell.deleteTapped.sink { [weak self] _ in
-//                if let model = self?.viewModel?.savedFiles[indexPath.row] {
-//                    self?.deleteMusic(for: model.id!)
-//                }
-            }.store(in: &cell.cancellables)
+            if let model = self.viewModel?.savedFiles[indexPath.row] {
+                cell.configure(model: model)
+            }
 
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let model = self.viewModel?.savedFiles[indexPath.row] {
-//            self.showEditMusicViewController(with: model)
+        let alert = UIAlertController(title: "Select Variant", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Preview", style: .default) { _ in
+//            self.preview(model: model)
+        })
+
+        alert.addAction(UIAlertAction(title: "To another format", style: .default) { _ in
+//            self.convert(model: model)
+        })
+    
+        alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
+            self.share(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "Download", style: .default) { _ in
+            self.share(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.deletePDF(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        if let popoverController = alert.popoverPresentationController {
+            if let cell = collectionView.cellForItem(at: indexPath) {
+                popoverController.sourceView = cell
+                popoverController.sourceRect = cell.bounds
+            }
         }
+
+        present(alert, animated: true, completion: nil)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

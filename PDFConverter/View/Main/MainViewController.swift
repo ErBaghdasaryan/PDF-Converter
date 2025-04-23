@@ -125,7 +125,7 @@ extension MainViewController {
         case 18:
             print("PNG to PDF")
         case 19:
-            print("HFIF to PDF")
+            print("Signature")
         default:
             break
         }
