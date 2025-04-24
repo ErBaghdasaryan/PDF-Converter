@@ -27,23 +27,26 @@ public class HistoryService: IHistoryService {
         let table = Table("SavedFiles")
 
         let idColumn = Expression<Int>("id")
-        let pdfURLColumn = Expression<String>("pdf_url")
+        let relativePathColumn = Expression<String>("relative_path")
         let typeColumn = Expression<String>("type")
 
         var result: [SavedFilesModel] = []
 
+        let baseDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+
         for row in try db.prepare(table) {
             if let pdfType = PDFType(rawValue: row[typeColumn]) {
-                let url = URL(fileURLWithPath: row[pdfURLColumn])
+                let relativePath = row[relativePathColumn]
+                let fullURL = baseDirectory.appendingPathComponent(relativePath)
+
                 let model = SavedFilesModel(
                     id: row[idColumn],
-                    pdfURL: url,
+                    pdfURL: fullURL,
                     type: pdfType
                 )
                 result.append(model)
-
             } else {
-                print("Неизвестный тип PDF: \(row[typeColumn])")
+                print("❗ Неизвестный тип PDF: \(row[typeColumn])")
             }
         }
 

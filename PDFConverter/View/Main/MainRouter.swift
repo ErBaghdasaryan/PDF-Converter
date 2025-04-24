@@ -27,4 +27,12 @@ final class MainRouter: BaseRouter {
         }
         navigationController.present(viewController, animated: true)
     }
+
+    static func showSelectViewController(in navigationController: UINavigationController) {
+        let viewController = ViewControllerFactory.makeSelectViewController()
+        viewController.navigationItem.hidesBackButton = true
+        navigationController.navigationBar.isHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }

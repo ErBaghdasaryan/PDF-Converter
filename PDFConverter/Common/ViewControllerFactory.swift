@@ -60,6 +60,14 @@ final class ViewControllerFactory {
         viewController.viewModel = assembler.resolver.resolve(IHistoryViewModel.self)
         return viewController
     }
+
+    //MARK: Select
+    static func makeSelectViewController() -> SelectViewController {
+        let assembler = Assembler(commonAssemblies + [SelectAssembly()])
+        let viewController = SelectViewController()
+        viewController.viewModel = assembler.resolver.resolve(ISelectViewModel.self)
+        return viewController
+    }
 //
 //    //MARK: Create
 //    static func makeCreateViewController(navigationModel: AdvancedSendModel) -> CreateViewController {

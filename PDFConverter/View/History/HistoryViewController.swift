@@ -8,6 +8,7 @@
 import UIKit
 import PDFConverterViewModel
 import SnapKit
+import QuickLook
 
 class HistoryViewController: BaseViewController {
 
@@ -16,6 +17,7 @@ class HistoryViewController: BaseViewController {
                                  textColor: UIColor.black,
                                  font: UIFont(name: "SFProText-Bold", size: 18))
     var collectionView: UICollectionView!
+    private var currentPreviewItem: URL?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,6 +159,15 @@ extension HistoryViewController {
 
         self.present(activityViewController, animated: true)
     }
+
+    private func preview(by index: Int) {
+        guard let pdfURL = self.viewModel?.savedFiles[index].pdfURL else { return }
+        currentPreviewItem = pdfURL
+
+        let previewController = QLPreviewController()
+        previewController.dataSource = self
+        present(previewController, animated: true, completion: nil)
+    }
 }
 
 extension HistoryViewController: IViewModelableController {
@@ -198,11 +209,11 @@ extension HistoryViewController: UICollectionViewDataSource, UICollectionViewDel
         let alert = UIAlertController(title: "Select Variant", message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "Preview", style: .default) { _ in
-//            self.preview(model: model)
+            self.preview(by: indexPath.row)
         })
 
         alert.addAction(UIAlertAction(title: "To another format", style: .default) { _ in
-//            self.convert(model: model)
+            self.setPageToMain()
         })
     
         alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
@@ -238,6 +249,15 @@ extension HistoryViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 }
 
+extension HistoryViewController: QLPreviewControllerDataSource {
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return currentPreviewItem! as QLPreviewItem
+    }
+}
 
 //MARK: Preview
 import SwiftUI

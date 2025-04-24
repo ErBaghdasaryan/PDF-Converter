@@ -26,17 +26,19 @@ public class TabBarService: ITabBarService {
         let table = Table("SavedFiles")
 
         let idColumn = Expression<Int>("id")
-        let pdfURLColumn = Expression<String>("pdf_url")
+        let relativePathColumn = Expression<String>("relative_path")
         let typeColumn = Expression<String>("type")
 
         try db.run(table.create(ifNotExists: true) { t in
             t.column(idColumn, primaryKey: .autoincrement)
-            t.column(pdfURLColumn)
+            t.column(relativePathColumn)
             t.column(typeColumn)
         })
 
+        let relativePath = model.pdfURL.lastPathComponent
+
         let rowId = try db.run(table.insert(
-            pdfURLColumn <- model.pdfURL.path,
+            relativePathColumn <- relativePath,
             typeColumn <- model.type.rawValue
         ))
 

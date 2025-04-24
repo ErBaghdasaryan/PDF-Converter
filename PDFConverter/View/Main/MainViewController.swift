@@ -85,9 +85,10 @@ extension MainViewController {
     }
 
     private func tappedCell(from index: Int) {
+        guard let navigationController = self.navigationController else { return }
         switch index {
         case 0:
-            print("Word to PDF")
+            MainRouter.showSelectViewController(in: navigationController)
         case 1:
             print("Exel to PDF")
         case 2:

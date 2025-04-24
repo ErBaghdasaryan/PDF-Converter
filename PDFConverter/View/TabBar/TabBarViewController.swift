@@ -126,9 +126,9 @@ extension TabBarViewController: UIImagePickerControllerDelegate {
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
             if let pdfURL = image.toPDF() {
-//                let document = PDFDocument(url: pdfURL)
-
                 self.viewModel?.addSavedFile(.init(pdfURL: pdfURL, type: .imageToPDF))
+
+                self.showSuccessAlert(message: "The image you took has been converted to pdf and is in the 'History' section.")
             }
         }
 
@@ -185,6 +185,12 @@ extension TabBarViewController {
 
     @objc func setPageToFirst() {
         self.selectedIndex = 0
+    }
+
+    func showSuccessAlert(message: String) {
+        let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 
