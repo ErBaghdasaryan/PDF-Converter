@@ -51,7 +51,7 @@ class TextViewController: BaseViewController {
         self.view.addSubview(nextButton)
         setupConstraints()
         setupNavigationItems()
-        setupViewTapHandling()
+        self.setupViewTapHandling()
     }
 
     override func setupViewModel() {
@@ -136,20 +136,6 @@ extension TextViewController {
 
 extension TextViewController: IViewModelableController {
     typealias ViewModel = ITextViewModel
-}
-
-//MARK: UIGesture & cell's touches
-extension TextViewController: UITextFieldDelegate, UITextViewDelegate {
-
-    @objc private func hideKeyboard() {
-        self.view.endEditing(true)
-    }
-
-    private func setupViewTapHandling() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tapGesture)
-    }
 }
 
 //MARK: Preview

@@ -42,7 +42,7 @@ class SettingsViewController: BaseViewController {
         self.title = "Settings"
 
         let mylayout = UICollectionViewFlowLayout()
-        mylayout.itemSize = CGSize(width: self.view.frame.width - 32, height: 52)
+        mylayout.itemSize = CGSize(width: self.view.frame.width, height: 52)
         mylayout.scrollDirection = .vertical
         mylayout.minimumLineSpacing = 0
         mylayout.minimumInteritemSpacing = 0
@@ -55,7 +55,6 @@ class SettingsViewController: BaseViewController {
         collectionView.register(SettingsCell.self)
         collectionView.register(VersionCell.self)
         collectionView.register(SettingsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SettingsHeaderView")
-        collectionView.backgroundColor = .clear
         collectionView.isScrollEnabled = true
 
         collectionView.delegate = self
@@ -302,7 +301,7 @@ extension SettingsViewController {
             )
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Go to App Store", style: .default) { _ in
-                if let appStoreURL = URL(string: "https://apps.apple.com/us/app/loud-ai-app/id6744518487") {
+                if let appStoreURL = URL(string: "https://apps.apple.com/us/app/pdf-converter-app/id6745167202") {
                     UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
                 }
             })
@@ -311,7 +310,7 @@ extension SettingsViewController {
     }
 
     private func shareTapped() {
-        let appStoreURL = URL(string: "https://apps.apple.com/us/app/loud-ai-app/id6744518487")!
+        let appStoreURL = URL(string: "https://apps.apple.com/us/app/pdf-converter-app/id6745167202")!
 
         let activityViewController = UIActivityViewController(activityItems: [appStoreURL], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
@@ -338,21 +337,33 @@ extension SettingsViewController {
     }
 
     private func contactUsTapped() {
-        guard let navigationController = self.navigationController else { return }
-
-        SettingsRouter.showContactUsViewController(in: navigationController)
+        let viewController = ViewControllerFactory.makeContactUsViewController()
+        viewController.modalPresentationStyle = .formSheet
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        self.present(viewController, animated: true)
     }
 
     private func termsTapped() {
-        guard let navigationController = self.navigationController else { return }
-
-        SettingsRouter.showTermsViewController(in: navigationController)
+        let viewController = ViewControllerFactory.makeTermsViewController()
+        viewController.modalPresentationStyle = .formSheet
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        self.present(viewController, animated: true)
     }
 
     private func privacyTapped() {
-        guard let navigationController = self.navigationController else { return }
-
-        SettingsRouter.showPrivacyViewController(in: navigationController)
+        let viewController = ViewControllerFactory.makePrivacyViewController()
+        viewController.modalPresentationStyle = .formSheet
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        self.present(viewController, animated: true)
     }
 }
 

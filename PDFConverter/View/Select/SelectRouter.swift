@@ -26,4 +26,12 @@ final class SelectRouter: BaseRouter {
         viewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(viewController, animated: true)
     }
+
+    static func showSplitViewController(in navigationController: UINavigationController, navigationModel: PDFUrlNavigationModel) {
+        let viewController = ViewControllerFactory.makeSplitViewController(navigationModel: navigationModel)
+        viewController.navigationItem.hidesBackButton = true
+        navigationController.navigationBar.isHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }

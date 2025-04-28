@@ -69,6 +69,16 @@ class BaseViewController: UIViewController {
         BaseRouter.popViewController(in: navigationController)
     }
 
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+
+    func setupViewTapHandling() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+    }
+
     // MARK: - Deinit
     deinit {
         #if DEBUG

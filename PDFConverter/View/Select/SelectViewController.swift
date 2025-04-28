@@ -221,7 +221,8 @@ extension SelectViewController {
         case .pointToPdf:
             print("pointToPdf")
         case .split:
-            print("split")
+            SelectRouter.showSplitViewController(in: navigationController,
+                                                navigationModel: .init(pdfURL: pdfURl))
         case .pdfToDoc:
             print("pdfToDoc")
         case .textToImage:

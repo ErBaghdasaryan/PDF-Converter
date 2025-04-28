@@ -92,23 +92,15 @@ final class ViewControllerFactory {
         viewController.viewModel = assembler.resolver.resolve(ITextViewModel.self, argument: navigationModel)
         return viewController
     }
-//
-//    //MARK: Create
-//    static func makeCreateViewController(navigationModel: AdvancedSendModel) -> CreateViewController {
-//        let assembler = Assembler(commonAssemblies + [CreateAssembly()])
-//        let viewController = CreateViewController()
-//        viewController.viewModel = assembler.resolver.resolve(ICreateViewModel.self, argument: navigationModel)
-//        return viewController
-//    }
-//
-//    //MARK: Edit
-//    static func makeEditViewController(navigationModel: EditNavigationModel) -> EditViewController {
-//        let assembler = Assembler(commonAssemblies + [EditAssembly()])
-//        let viewController = EditViewController()
-//        viewController.viewModel = assembler.resolver.resolve(IEditViewModel.self, argument: navigationModel)
-//        return viewController
-//    }
-//
+
+    //MARK: Split
+    static func makeSplitViewController(navigationModel: PDFUrlNavigationModel) -> SplitViewController {
+        let assembler = Assembler(commonAssemblies + [SplitAssembly()])
+        let viewController = SplitViewController()
+        viewController.viewModel = assembler.resolver.resolve(ISplitViewModel.self, argument: navigationModel)
+        return viewController
+    }
+
     //MARK: Settings
     static func makeSettingsViewController() -> SettingsViewController {
         let assembler = Assembler(commonAssemblies + [SettingsAssembly()])

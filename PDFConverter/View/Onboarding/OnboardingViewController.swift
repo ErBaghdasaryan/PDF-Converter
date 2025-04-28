@@ -196,7 +196,7 @@ extension OnboardingViewController {
             )
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Go to App Store", style: .default) { _ in
-                if let appStoreURL = URL(string: "https://apps.apple.com/us/app/loud-ai-app/id6744518487") {
+                if let appStoreURL = URL(string: "https://apps.apple.com/us/app/pdf-converter-app/id6745167202") {
                     UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
                 }
             })
