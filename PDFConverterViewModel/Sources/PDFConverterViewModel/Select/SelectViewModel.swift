@@ -12,6 +12,8 @@ public protocol ISelectViewModel {
     var savedFiles: [SavedFilesModel] { get set }
     func loadFiles()
     func deleteSavedFile(by id: Int)
+    var type: PDFType { get }
+    func addSavedFile(_ model: SavedFilesModel)
 }
 
 public class SelectViewModel: ISelectViewModel {
@@ -20,8 +22,20 @@ public class SelectViewModel: ISelectViewModel {
 
     public var savedFiles: [SavedFilesModel] = []
 
-    public init(historyService: IHistoryService) {
+    public var type: PDFType
+
+    public init(historyService: IHistoryService,
+                navigationModel: SelectNavigationModel) {
         self.historyService = historyService
+        self.type = navigationModel.type
+    }
+
+    public func addSavedFile(_ model: SavedFilesModel) {
+        do {
+            _ = try self.historyService.addSavedFile(model)
+        } catch {
+            print(error)
+        }
     }
 
     public func loadFiles() {

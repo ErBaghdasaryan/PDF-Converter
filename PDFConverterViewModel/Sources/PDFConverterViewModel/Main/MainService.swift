@@ -36,14 +36,14 @@ public class MainService: IMainService {
             t.column(typeColumn)
         })
 
-        let relativePath = model.pdfURL.lastPathComponent
+        let relativePath = model.fileURL.lastPathComponent
 
         let rowId = try db.run(table.insert(
             relativePathColumn <- relativePath,
             typeColumn <- model.type.rawValue
         ))
 
-        return SavedFilesModel(id: Int(rowId), pdfURL: model.pdfURL, type: model.type)
+        return SavedFilesModel(id: Int(rowId), pdfURL: model.fileURL, type: model.type)
     }
 
     public func getMainItems() -> [[MainItem]] {
@@ -52,8 +52,6 @@ public class MainService: IMainService {
                 MainItem(icon: UIImage(named: "WordToPDF"), title: "Word to PDF"),
                 MainItem(icon: UIImage(named: "ExelToPDF"), title: "Exel to PDF"),
                 MainItem(icon: UIImage(named: "PDF"), title: "PDF"),
-                MainItem(icon: UIImage(named: "PDFtoText"), title: "PDF to text"),
-                MainItem(icon: UIImage(named: "Join"), title: "Join"),
                 MainItem(icon: UIImage(named: "ImageToPDF"), title: "Image to PDF"),
                 MainItem(icon: UIImage(named: "PointToPDF"), title: "Point to PDF"),
                 MainItem(icon: UIImage(named: "Split"), title: "Split"),
@@ -63,7 +61,6 @@ public class MainService: IMainService {
                 MainItem(icon: UIImage(named: "ExelToPDF"), title: "Exel to PDF"),
                 MainItem(icon: UIImage(named: "PDF"), title: "PDF"),
                 MainItem(icon: UIImage(named: "PDFtoDOC"), title: "PDF to DOC"),
-                MainItem(icon: UIImage(named: "Join"), title: "Join"),
                 MainItem(icon: UIImage(named: "ImageToPDF"), title: "Image to PDF"),
                 MainItem(icon: UIImage(named: "PointToPDF"), title: "PPT to PDF"),
                 MainItem(icon: UIImage(named: "Split"), title: "Split"),

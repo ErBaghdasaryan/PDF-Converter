@@ -9,6 +9,7 @@ import UIKit
 import PDFConverterViewModel
 import SnapKit
 import PDFConverterModel
+import UniformTypeIdentifiers
 
 class SelectViewController: BaseViewController {
 
@@ -17,9 +18,14 @@ class SelectViewController: BaseViewController {
                                  textColor: UIColor.black,
                                  font: UIFont(name: "SFProText-Bold", size: 18))
     var collectionView: UICollectionView!
+    private let nextButton = UIButton(type: .system)
 
     private var selectedIndex: IndexPath?
-    private var selectedGenre: SavedFilesModel?
+    private var selectedFile: SavedFilesModel?
+
+    private var collectionViewDataSource: [SavedFilesModel] = []
+
+    private var conversionType: PDFType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +42,12 @@ class SelectViewController: BaseViewController {
         self.view.backgroundColor = .white
 
         self.header.textAlignment = .left
+
+        self.nextButton.setTitle("Next", for: .normal)
+        self.nextButton.setTitleColor(.white, for: .normal)
+        self.nextButton.layer.cornerRadius = 12
+        self.nextButton.layer.masksToBounds = true
+        self.nextButton.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 15)
 
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 343, height: 65)
@@ -57,16 +69,49 @@ class SelectViewController: BaseViewController {
 
         collectionView.insetsLayoutMarginsFromSafeArea = false
 
+        let buttonGradient = CAGradientLayer()
+        buttonGradient.colors = [
+            UIColor(hex: "#232120")!.cgColor,
+            UIColor(hex: "#565150")!.cgColor,
+            UIColor(hex: "#89817F")!.cgColor
+        ]
+        buttonGradient.startPoint = CGPoint(x: 0, y: 0.5)
+        buttonGradient.endPoint = CGPoint(x: 1, y: 0.5)
+        buttonGradient.locations = [0.0, 0.5, 1.0]
+        buttonGradient.cornerRadius = 20
+        nextButton.layer.insertSublayer(buttonGradient, at: 0)
+
         self.view.addSubview(header)
         self.view.addSubview(collectionView)
+        self.view.addSubview(nextButton)
         setupConstraints()
         setupNavigationItems()
     }
 
     override func setupViewModel() {
         super.setupViewModel()
+
         self.viewModel?.loadFiles()
-        self.collectionView.reloadData()
+
+        self.conversionType = self.viewModel?.type
+
+        if let savedFiles = self.viewModel?.savedFiles {
+            self.collectionViewDataSource = savedFiles.filter { file in
+                let expectedType = self.conversionType
+
+                let ext = file.fileURL.pathExtension.lowercased()
+                return isSupportedExtension(for: expectedType!, fileExtension: ext)
+            }
+            self.collectionView.reloadData()
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if let gradientLayer = nextButton.layer.sublayers?.first as? CAGradientLayer {
+            gradientLayer.frame = nextButton.bounds
+        }
     }
 
     func setupConstraints() {
@@ -84,6 +129,13 @@ class SelectViewController: BaseViewController {
             view.trailing.equalToSuperview().inset(16)
             view.bottom.equalToSuperview()
         }
+
+        nextButton.snp.makeConstraints { view in
+            view.bottom.equalToSuperview().inset(50)
+            view.leading.equalToSuperview().offset(16)
+            view.trailing.equalToSuperview().inset(16)
+            view.height.equalTo(44)
+        }
     }
 
 }
@@ -92,11 +144,124 @@ class SelectViewController: BaseViewController {
 extension SelectViewController {
     
     private func makeButtonsAction() {
-        
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+    }
+
+    private func isSupportedExtension(for type: PDFType, fileExtension: String) -> Bool {
+        switch type {
+        case .wordToPDF:
+            return ["doc", "docx"].contains(fileExtension)
+        case .exelToPDF:
+            return ["xls", "xlsx"].contains(fileExtension)
+        case .imageToPDF:
+            return ["jpg", "jpeg", "png"].contains(fileExtension)
+        case .pdf, .textToImage, .split, .pdfToDoc, .signature:
+            return fileExtension == "pdf"
+        case .pointToPdf:
+            return ["ppt", "pptx"].contains(fileExtension)
+        case .pngToPdf:
+            return fileExtension == "png"
+        case .jpegToPDF:
+            return ["jpeg", "jpg"].contains(fileExtension)
+        }
+    }
+
+    private func uploadWithType() {
+        guard let conversionType = self.conversionType else { return }
+
+        let supportedTypes: [UTType]
+
+        switch conversionType {
+        case .wordToPDF:
+            supportedTypes = [UTType(filenameExtension: "doc")!, UTType(filenameExtension: "docx")!]
+        case .exelToPDF:
+            supportedTypes = [UTType(filenameExtension: "xls")!, UTType(filenameExtension: "xlsx")!]
+        case .pdf, .split, .pdfToDoc, .textToImage, .signature:
+            supportedTypes = [UTType.pdf]
+        case .pointToPdf:
+            supportedTypes = [UTType(filenameExtension: "ppt")!, UTType(filenameExtension: "pptx")!]
+        case .pngToPdf:
+            supportedTypes = [UTType.png]
+        case .jpegToPDF:
+            supportedTypes = [UTType.jpeg, UTType(filenameExtension: "jpg")!]
+        case .imageToPDF:
+            supportedTypes = [UTType.jpeg, UTType(filenameExtension: "jpg")!, UTType.png]
+        }
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.allowsMultipleSelection = false
+        present(documentPicker, animated: true, completion: nil)
+    }
+
+    @objc func nextButtonTapped() {
+        guard let navigationController = self.navigationController else { return }
+        guard let type = self.conversionType else { return }
+        guard let pdfURl = self.selectedFile?.fileURL else {
+            self.showBadAlert(message: "Please select one of the existing files or add a new file before proceeding to the next page.")
+            return
+        }
+
+        switch type {
+        case .wordToPDF:
+            print("wordToPDF")
+        case .imageToPDF:
+            if let imageURL = convertImageURLToPDF(pdfURl) {
+                self.viewModel?.addSavedFile(.init(pdfURL: imageURL, type: .imageToPDF))
+                self.showSuccessAlert(message: "Your image has been converted to pdf and saved. Check it in the 'History' section.") {
+                    if let sceneDelegate = UIApplication.shared.connectedScenes
+                        .first?.delegate as? SceneDelegate {
+                        sceneDelegate.startTabBarFlow()
+                    }
+                }
+            }
+        case .exelToPDF:
+            print("exelToPDF")
+        case .pdf:
+            print("pdf")
+        case .pointToPdf:
+            print("pointToPdf")
+        case .split:
+            print("split")
+        case .pdfToDoc:
+            print("pdfToDoc")
+        case .textToImage:
+            SelectRouter.showTextViewController(in: navigationController,
+                                                navigationModel: .init(pdfURL: pdfURl))
+        case .pngToPdf:
+            if let imageURL = convertImageURLToPDF(pdfURl) {
+                self.viewModel?.addSavedFile(.init(pdfURL: imageURL, type: .pngToPdf))
+                self.showSuccessAlert(message: "Your image has been converted to pdf and saved. Check it in the 'History' section.") {
+                    if let sceneDelegate = UIApplication.shared.connectedScenes
+                        .first?.delegate as? SceneDelegate {
+                        sceneDelegate.startTabBarFlow()
+                    }
+                }
+            }
+        case .signature:
+            SelectRouter.showSignatureViewController(in: navigationController,
+                                                     navigationModel: .init(pdfURL: pdfURl))
+        case .jpegToPDF:
+            if let imageURL = convertImageURLToPDF(pdfURl) {
+                self.viewModel?.addSavedFile(.init(pdfURL: imageURL, type: .jpegToPDF))
+                self.showSuccessAlert(message: "Your image has been converted to pdf and saved. Check it in the 'History' section.") {
+                    if let sceneDelegate = UIApplication.shared.connectedScenes
+                        .first?.delegate as? SceneDelegate {
+                        sceneDelegate.startTabBarFlow()
+                    }
+                }
+            }
+        }
     }
 
     @objc func plusFile() {
-        
+        let alert = UIAlertController(title: "Select Variant", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Upload from device", style: .default) { _ in
+            self.uploadWithType()
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        present(alert, animated: true, completion: nil)
     }
 
     @objc func customBackFunctionality() {
@@ -121,7 +286,16 @@ extension SelectViewController {
 
         navigationItem.leftBarButtonItem = leftButton
         navigationItem.rightBarButtonItem = rightButton
-        
+
+    }
+
+    func convertImageURLToPDF(_ imageUrl: URL) -> URL? {
+        if let image = UIImage(contentsOfFile: imageUrl.path) {
+            return image.toPDF()
+        } else {
+            print("Path error: \(imageUrl)")
+            return nil
+        }
     }
 
 }
@@ -133,11 +307,11 @@ extension SelectViewController: IViewModelableController {
 //MARK: Collection view delegate
 extension SelectViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.viewModel?.savedFiles.isEmpty ?? true ? 1 : self.viewModel!.savedFiles.count
+        return self.collectionViewDataSource.isEmpty ? 1 : self.collectionViewDataSource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if self.viewModel?.savedFiles.isEmpty ?? true {
+        if self.collectionViewDataSource.isEmpty {
 
             self.header.isHidden = true
 
@@ -150,9 +324,8 @@ extension SelectViewController: UICollectionViewDataSource, UICollectionViewDele
 
             cell.updateSelectionState(isSelected: indexPath == selectedIndex)
 
-            if let model = self.viewModel?.savedFiles[indexPath.row] {
-                cell.configure(model: model)
-            }
+            let model = self.collectionViewDataSource[indexPath.row]
+            cell.configure(model: model)
 
             return cell
         }
@@ -165,7 +338,7 @@ extension SelectViewController: UICollectionViewDataSource, UICollectionViewDele
         }
 
         selectedIndex = indexPath
-        selectedGenre = self.viewModel?.savedFiles[indexPath.row]
+        selectedFile = self.collectionViewDataSource[indexPath.row]
 
         if let newCell = collectionView.cellForItem(at: indexPath) as? SelectFileCollectionViewCell {
             newCell.updateSelectionState(isSelected: true)
@@ -173,11 +346,23 @@ extension SelectViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if self.viewModel?.savedFiles.isEmpty ?? true {
+        if self.collectionViewDataSource.isEmpty {
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         } else {
             return CGSize(width: 343, height: 65)
         }
+    }
+}
+
+extension SelectViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
+
+        let newSavedFile = SavedFilesModel(id: UUID().hashValue,
+                                           pdfURL: url,
+                                           type: self.conversionType ?? .pdf)
+        self.collectionViewDataSource.append(newSavedFile)
+        self.collectionView.reloadData()
     }
 }
 

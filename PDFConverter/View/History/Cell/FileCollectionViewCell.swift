@@ -110,14 +110,6 @@ class FileCollectionViewCell: UICollectionViewCell, IReusableView {
             image.image = UIImage(named: "PDF")
             self.titleLabel.text = "PDF"
             self.subTitleLabel.text = "Today"
-        case .pdfToText:
-            image.image = UIImage(named: "PDFtoText")
-            self.titleLabel.text = "PDF to Text"
-            self.subTitleLabel.text = "Today"
-        case .join:
-            image.image = UIImage(named: "Join")
-            self.titleLabel.text = "Join"
-            self.subTitleLabel.text = "Today"
         case .imageToPDF:
             image.image = UIImage(named: "ImageToPDF")
             self.titleLabel.text = "Image to PDF"
@@ -138,11 +130,21 @@ class FileCollectionViewCell: UICollectionViewCell, IReusableView {
             image.image = UIImage(named: "signature")
             self.titleLabel.text = "Signature"
             self.subTitleLabel.text = "Today"
-        default:
-            break
+        case .textToImage:
+            image.image = UIImage(named: "TXTtoPDF")
+            self.titleLabel.text = "Text to image"
+            self.subTitleLabel.text = "Today"
+        case .jpegToPDF:
+            image.image = UIImage(named: "JPEGtoPDF")
+            self.titleLabel.text = "Jpeg to PDF"
+            self.subTitleLabel.text = "Today"
+        case .pngToPdf:
+            image.image = UIImage(named: "PNGtoPDF")
+            self.titleLabel.text = "Png to PDF"
+            self.subTitleLabel.text = "Today"
         }
 
-        self.document = PDFDocument(url: model.pdfURL)
+        self.document = PDFDocument(url: model.fileURL)
         let pagesCount: Int = document?.pageCount ?? 0
         self.pagesCount.text = "\(pagesCount) pages"
     }

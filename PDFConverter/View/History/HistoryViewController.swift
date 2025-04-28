@@ -143,7 +143,7 @@ extension HistoryViewController {
     }
 
     private func share(by index: Int) {
-        guard let pdfURL = self.viewModel?.savedFiles[index].pdfURL else { return }
+        guard let pdfURL = self.viewModel?.savedFiles[index].fileURL else { return }
 
         let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
 
@@ -161,7 +161,7 @@ extension HistoryViewController {
     }
 
     private func preview(by index: Int) {
-        guard let pdfURL = self.viewModel?.savedFiles[index].pdfURL else { return }
+        guard let pdfURL = self.viewModel?.savedFiles[index].fileURL else { return }
         currentPreviewItem = pdfURL
 
         let previewController = QLPreviewController()

@@ -88,45 +88,57 @@ extension MainViewController {
         guard let navigationController = self.navigationController else { return }
         switch index {
         case 0:
-            MainRouter.showSelectViewController(in: navigationController)
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .wordToPDF))
         case 1:
-            print("Exel to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .exelToPDF))
         case 2:
-            print("PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .pdf))
         case 3:
-            print("PDF to txt")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .imageToPDF))
         case 4:
-            print("Join")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .pointToPdf))
         case 5:
-            print("Image to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .split))
         case 6:
-            print("Point to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .wordToPDF))
         case 7:
-            print("Split")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .exelToPDF))
         case 8:
-            print("Word to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .pdf))
         case 9:
-            print("Exel to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .pdfToDoc))
         case 10:
-            print("PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .imageToPDF))
         case 11:
-            print("PDF to DOC")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .pointToPdf))
         case 12:
-            print("Join")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .split))
         case 13:
-            print("Image to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .jpegToPDF))
         case 14:
-            print("PPT to PDF")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .textToImage))
         case 15:
-            print("Split")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .pngToPdf))
         case 16:
-            print("JPEG to PDF")
-        case 17:
-            print("TXT to Image")
-        case 18:
-            print("PNG to PDF")
-        case 19:
-            print("Signature")
+            MainRouter.showSelectViewController(in: navigationController,
+                                                navigationModel: .init(type: .signature))
+
         default:
             break
         }

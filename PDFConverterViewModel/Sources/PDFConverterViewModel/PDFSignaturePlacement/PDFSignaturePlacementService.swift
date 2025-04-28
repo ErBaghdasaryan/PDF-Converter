@@ -1,19 +1,19 @@
 //
-//  TabBarService.swift
+//  PDFSignaturePlacementService.swift
 //  PDFConverterViewModel
 //
-//  Created by Er Baghdasaryan on 23.04.25.
+//  Created by Er Baghdasaryan on 24.04.25.
 //
 
 import UIKit
 import PDFConverterModel
 import SQLite
 
-public protocol ITabBarService {
+public protocol IPDFSignaturePlacementService {
     func addSavedFile(_ model: SavedFilesModel) throws -> SavedFilesModel
 }
 
-public class TabBarService: ITabBarService {
+public class PDFSignaturePlacementService: IPDFSignaturePlacementService {
 
     public init() { }
 

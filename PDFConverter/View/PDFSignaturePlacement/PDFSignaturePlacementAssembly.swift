@@ -1,5 +1,5 @@
 //
-//  SelectAssembly.swift
+//  PDFSignaturePlacementAssembly.swift
 //  PDFConverter
 //
 //  Created by Er Baghdasaryan on 24.04.25.
@@ -11,17 +11,17 @@ import Swinject
 import SwinjectAutoregistration
 import PDFConverterModel
 
-final class SelectAssembly: Assembly {
+final class PDFSignaturePlacementAssembly: Assembly {
     func assemble(container: Swinject.Container) {
         registerViewModelServices(in: container)
         registerViewModel(in: container)
     }
 
     func registerViewModel(in container: Container) {
-        container.autoregister(ISelectViewModel.self, argument: SelectNavigationModel.self, initializer: SelectViewModel.init)
+        container.autoregister(IPDFSignaturePlacementViewModel.self, argument: PDFSignaturePlacementServiceNavModel.self, initializer: PDFSignaturePlacementViewModel.init)
     }
 
     func registerViewModelServices(in container: Container) {
-        container.autoregister(IHistoryService.self, initializer: HistoryService.init)
+        container.autoregister(IPDFSignaturePlacementService.self, initializer: PDFSignaturePlacementService.init)
     }
 }

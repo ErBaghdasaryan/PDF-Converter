@@ -62,10 +62,34 @@ final class ViewControllerFactory {
     }
 
     //MARK: Select
-    static func makeSelectViewController() -> SelectViewController {
+    static func makeSelectViewController(navigationModel: SelectNavigationModel) -> SelectViewController {
         let assembler = Assembler(commonAssemblies + [SelectAssembly()])
         let viewController = SelectViewController()
-        viewController.viewModel = assembler.resolver.resolve(ISelectViewModel.self)
+        viewController.viewModel = assembler.resolver.resolve(ISelectViewModel.self, argument: navigationModel)
+        return viewController
+    }
+
+    //MARK: Signature
+    static func makeSignatureViewController(navigationModel: PDFUrlNavigationModel) -> SignatureViewController {
+        let assembler = Assembler(commonAssemblies + [SignatureAssembly()])
+        let viewController = SignatureViewController()
+        viewController.viewModel = assembler.resolver.resolve(ISignatureViewModel.self, argument: navigationModel)
+        return viewController
+    }
+
+    //MARK: PDFSignaturePlacementViewController
+    static func makePDFSignaturePlacementViewControllerViewController(navigationModel: PDFSignaturePlacementServiceNavModel) -> PDFSignaturePlacementViewController {
+        let assembler = Assembler(commonAssemblies + [PDFSignaturePlacementAssembly()])
+        let viewController = PDFSignaturePlacementViewController()
+        viewController.viewModel = assembler.resolver.resolve(IPDFSignaturePlacementViewModel.self, argument: navigationModel)
+        return viewController
+    }
+
+    //MARK: Text
+    static func makeTextViewController(navigationModel: PDFUrlNavigationModel) -> TextViewController {
+        let assembler = Assembler(commonAssemblies + [TextAssembly()])
+        let viewController = TextViewController()
+        viewController.viewModel = assembler.resolver.resolve(ITextViewModel.self, argument: navigationModel)
         return viewController
     }
 //

@@ -9,12 +9,12 @@ import UIKit
 
 public struct SavedFilesModel {
     public let id: Int?
-    public let pdfURL: URL
+    public let fileURL: URL
     public let type: PDFType
 
     public init(id: Int? = nil, pdfURL: URL, type: PDFType) {
         self.id = id
-        self.pdfURL = pdfURL
+        self.fileURL = pdfURL
         self.type = type
     }
 }
@@ -24,13 +24,11 @@ public enum PDFType: String {
     case imageToPDF
     case exelToPDF
     case pdf
-    case pdfToText
-    case join
     case pointToPdf
     case split
     case pdfToDoc
-    case text
     case textToImage
     case pngToPdf
     case signature
+    case jpegToPDF
 }

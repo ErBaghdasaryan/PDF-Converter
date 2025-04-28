@@ -46,5 +46,24 @@ public extension UIImage {
             return nil
         }
     }
-    
+
+    static func imageFrom(text: String, font: UIFont, textColor: UIColor, backgroundColor: UIColor = .clear, size: CGSize = CGSize(width: 300, height: 100)) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { context in
+            backgroundColor.setFill()
+            context.fill(CGRect(origin: .zero, size: size))
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: textColor,
+                .paragraphStyle: paragraphStyle
+            ]
+            
+            let attributedString = NSAttributedString(string: text, attributes: attributes)
+            attributedString.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }

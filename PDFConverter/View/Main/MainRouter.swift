@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import PDFConverterViewModel
+import PDFConverterModel
 
 final class MainRouter: BaseRouter {
     static func showPaymentViewController(in navigationController: UINavigationController) {
@@ -28,8 +29,9 @@ final class MainRouter: BaseRouter {
         navigationController.present(viewController, animated: true)
     }
 
-    static func showSelectViewController(in navigationController: UINavigationController) {
-        let viewController = ViewControllerFactory.makeSelectViewController()
+    static func showSelectViewController(in navigationController: UINavigationController,
+                                         navigationModel: SelectNavigationModel) {
+        let viewController = ViewControllerFactory.makeSelectViewController(navigationModel: navigationModel)
         viewController.navigationItem.hidesBackButton = true
         navigationController.navigationBar.isHidden = false
         viewController.hidesBottomBarWhenPushed = true

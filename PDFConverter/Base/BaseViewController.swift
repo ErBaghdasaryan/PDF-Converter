@@ -38,15 +38,23 @@ class BaseViewController: UIViewController {
         
     }
 
-    func showSuccessAlert(message: String) {
+    func showSuccessAlert(message: String, onOk: (() -> Void)? = nil) {
         let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                onOk?()
+        }
+
+        alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
 
-    func showBadAlert(message: String) {
+    func showBadAlert(message: String, onOk: (() -> Void)? = nil) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                onOk?()
+        }
+
+        alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
 
