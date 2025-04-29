@@ -9,7 +9,7 @@ import UIKit
 import PDFConverterViewModel
 import SnapKit
 import StoreKit
-//import OneSignalFramework
+import OneSignalFramework
 
 class NotificationViewController: BaseViewController, UICollectionViewDelegate {
 
@@ -153,17 +153,15 @@ extension NotificationViewController {
     @objc func nextButtonTaped() {
         guard let navigationController = self.navigationController else { return }
 
-//        OneSignal.Notifications.requestPermission({ accepted in
-//            DispatchQueue.main.async {
-//                if accepted {
-//                    self.showNTFSuccessAlert(message: "You have successfully enabled your notifications.")
-//                } else {
-//                    self.showNTFBadAlert(message: "You haven't enabled your notifications!")
-//                }
-//            }
-//        }, fallbackToSettings: true)
-        NotificationRouter.showPaymentViewController(in: navigationController)
-        self.viewModel?.isEnabled = true
+        OneSignal.Notifications.requestPermission({ accepted in
+            DispatchQueue.main.async {
+                if accepted {
+                    self.showNTFSuccessAlert(message: "You have successfully enabled your notifications.")
+                } else {
+                    self.showNTFBadAlert(message: "You haven't enabled your notifications!")
+                }
+            }
+        }, fallbackToSettings: true)
     }
 
     func showNTFSuccessAlert(message: String) {

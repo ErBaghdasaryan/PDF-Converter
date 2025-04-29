@@ -62,24 +62,18 @@ final class PaymentButton: UIButton {
         case .yearly:
             self.title.text = "Year"
             self.count.text = "Then 49.99 $"
-            self.perDuration.text = "4.16 $ / Month"
-            self.saveLabel.text = "Save 30%"
+            self.perDuration.text = "1 $ / Week"
+            self.saveLabel.text = "Save 50%"
+
+            addSubview(saveLabel)
         case .weekly:
             self.title.text = "Week"
-            self.count.text = "Then 0.99 $"
-            self.perDuration.text = "0.99 $ / Day"
-            self.saveLabel.text = "Save 30%"
-            break
-        case .monthly:
-            self.title.text = "Month"
-            self.count.text = "Then 0.99 $"
-            self.perDuration.text = "0.99 $ / Day"
-            self.saveLabel.text = "Save 40%"
+            self.count.text = "Then 9.99 $"
+            self.perDuration.text = "1.4 $ / Day"
         }
 
         self.isSelectedState = false
 
-        addSubview(saveLabel)
         addSubview(title)
         addSubview(count)
         addSubview(whiteLine)
@@ -88,18 +82,29 @@ final class PaymentButton: UIButton {
     }
 
     private func setupConstraints() {
-        saveLabel.snp.makeConstraints { view in
-            view.top.equalToSuperview().offset(12)
-            view.leading.equalToSuperview().offset(10.5)
-            view.trailing.equalToSuperview().inset(10.5)
-            view.height.equalTo(24)
-        }
+        switch self.type {
+        case .yearly:
+            saveLabel.snp.makeConstraints { view in
+                view.top.equalToSuperview().offset(12)
+                view.leading.equalToSuperview().offset(55)
+                view.trailing.equalToSuperview().inset(55)
+                view.height.equalTo(24)
+            }
 
-        title.snp.makeConstraints { view in
-            view.top.equalTo(saveLabel.snp.bottom).offset(8)
-            view.leading.equalToSuperview().offset(12)
-            view.trailing.equalToSuperview().inset(12)
-            view.height.equalTo(14)
+            title.snp.makeConstraints { view in
+                view.top.equalTo(saveLabel.snp.bottom).offset(8)
+                view.leading.equalToSuperview().offset(12)
+                view.trailing.equalToSuperview().inset(12)
+                view.height.equalTo(18)
+            }
+
+        case .weekly:
+            title.snp.makeConstraints { view in
+                view.top.equalToSuperview().offset(28)
+                view.leading.equalToSuperview().offset(12)
+                view.trailing.equalToSuperview().inset(12)
+                view.height.equalTo(18)
+            }
         }
 
         count.snp.makeConstraints { view in
@@ -149,6 +154,5 @@ final class PaymentButton: UIButton {
 
 enum PlanPresentationModel {
     case weekly
-    case monthly
     case yearly
 }

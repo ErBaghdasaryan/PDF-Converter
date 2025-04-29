@@ -9,7 +9,7 @@ import UIKit
 import PDFConverterViewModel
 import SnapKit
 import StoreKit
-//import ApphudSDK
+import ApphudSDK
 
 class SettingsViewController: BaseViewController {
 
@@ -127,11 +127,7 @@ extension SettingsViewController {
     @objc func getProSubscription() {
         guard let navigationController = self.navigationController else { return }
 
-//        if Apphud.hasActiveSubscription() {
-//            SettingsRouter.showUpdatePaymentViewController(in: navigationController)
-//        } else {
-            SettingsRouter.showPaymentViewController(in: navigationController)
-//        }
+        SettingsRouter.showPaymentViewController(in: navigationController)
     }
 
     private func configureCorners(for cell: UICollectionViewCell, indexPath: IndexPath) {
@@ -263,31 +259,30 @@ extension SettingsViewController {
     }
 
     private func restoreTapped() {
-//        guard let navigationController = self.navigationController else { return }
-//        self.restorePurchase { result in
-//            if result {
-//                self.showSuccessAlert(message: "You have successfully restored your purchases.")
-//            } else {
-//                self.showBadAlert(message: "Your purchase could not be restored. Please try again later.")
-//            }
-//        }
+        self.restorePurchase { result in
+            if result {
+                self.showSuccessAlert(message: "You have successfully restored your purchases.")
+            } else {
+                self.showBadAlert(message: "Your purchase could not be restored. Please try again later.")
+            }
+        }
     }
 
-//    @MainActor
-//    func restorePurchase(escaping: @escaping(Bool) -> Void) {
-//        Apphud.restorePurchases { subscriptions, _, error in
-//            if let error = error {
-//                print(error.localizedDescription)
-//                escaping(false)
-//            }
-//            if subscriptions?.first?.isActive() ?? false {
-//                escaping(true)
-//            }
-//            if Apphud.hasActiveSubscription() {
-//                escaping(true)
-//            }
-//        }
-//    }
+    @MainActor
+    func restorePurchase(escaping: @escaping(Bool) -> Void) {
+        Apphud.restorePurchases { subscriptions, _, error in
+            if let error = error {
+                print(error.localizedDescription)
+                escaping(false)
+            }
+            if subscriptions?.first?.isActive() ?? false {
+                escaping(true)
+            }
+            if Apphud.hasActiveSubscription() {
+                escaping(true)
+            }
+        }
+    }
 
     private func rateTapped() {
         guard let scene = view.window?.windowScene else { return }

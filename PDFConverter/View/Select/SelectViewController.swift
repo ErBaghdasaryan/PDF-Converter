@@ -292,11 +292,11 @@ extension SelectViewController {
             return
         }
         guard let selectedFile = self.selectedFile else { return }
+        guard let userID = self.viewModel?.userID else { return }
+        let appBundle = Bundle.main.bundleIdentifier ?? ""
 
         switch type {
         case .wordToPDF:
-            let appBundle = "com.aid.pdfconverter"
-            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
             if let exelURL = self.selectedFile?.fileURL {
                 self.viewModel?.createByMultipartRequest(userId: userID,
                                                          appBundle: appBundle,
@@ -315,8 +315,6 @@ extension SelectViewController {
                 }
             }
         case .exelToPDF:
-            let appBundle = "com.aid.pdfconverter"
-            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
             if let exelURL = self.selectedFile?.fileURL {
                 self.viewModel?.createByMultipartRequest(userId: userID,
                                                          appBundle: appBundle,
@@ -328,8 +326,6 @@ extension SelectViewController {
             SelectRouter.showPasswordViewController(in: navigationController,
                                                     navigationModel: .init(model: selectedFile))
         case .pointToPdf:
-            let appBundle = "com.aid.pdfconverter"
-            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
             if let exelURL = self.selectedFile?.fileURL {
                 self.viewModel?.createByMultipartRequest(userId: userID,
                                                          appBundle: appBundle,
@@ -341,8 +337,6 @@ extension SelectViewController {
             SelectRouter.showSplitViewController(in: navigationController,
                                                 navigationModel: .init(pdfURL: pdfURl))
         case .pdfToDoc:
-            let appBundle = "com.aid.pdfconverter"
-            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
             if let exelURL = self.selectedFile?.fileURL {
                 self.viewModel?.createByMultipartRequest(userId: userID,
                                                          appBundle: appBundle,
@@ -377,6 +371,8 @@ extension SelectViewController {
                 }
             }
         }
+
+        FreeUsageManager.shared.decrementFreeUsage()
     }
 
     @objc func plusFile() {

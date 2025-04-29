@@ -6,15 +6,44 @@
 //
 
 import UIKit
+import ApphudSDK
+import PDFConverterViewModel
+import AppTrackingTransparency
+import AdSupport
+import OneSignalFramework
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    let appStorageService = AppStorageService()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        Apphud.start(apiKey: "app_HxmvSQYaTTvxRAuLcE1sXx1NKkbZDd")
+        Apphud.enableDebugLogs()
+        Apphud.setDeviceIdentifiers(idfa: nil, idfv: UIDevice.current.identifierForVendor?.uuidString)
+        fetchIDFA()
+
+        OneSignal.initialize("72ad786a-6ee5-417f-b6d0-f3b3242517c9", withLaunchOptions: launchOptions)
+
+        let appHudUserId = Apphud.userID()
+        self.appStorageService.saveData(key: .apphudUserID, value: appHudUserId)
+
+        FreeUsageManager.shared.initializeFreeUsageIfNeeded()
+
         return true
+    }
+
+    func fetchIDFA() {
+        if #available(iOS 14.5, *) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    guard status == .authorized else { return }
+                    let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+                    Apphud.setDeviceIdentifiers(idfa: idfa, idfv: UIDevice.current.identifierForVendor?.uuidString)
+                }
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle

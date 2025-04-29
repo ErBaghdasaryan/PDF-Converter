@@ -27,12 +27,15 @@ public protocol ISelectViewModel {
 
     var getFileSuccessSubject: PassthroughSubject<Data, Never> { get }
     func getFile(by fileID: UUID)
+
+    var userID: String { get set }
 }
 
 public class SelectViewModel: ISelectViewModel {
 
     private let historyService: IHistoryService
     public let networkService: INetworkService
+    public let appStorageService: IAppStorageService
 
     public var savedFiles: [SavedFilesModel] = []
 
@@ -53,12 +56,22 @@ public class SelectViewModel: ISelectViewModel {
     private var pollingCancellable: AnyCancellable?
     private var isPolling = false
 
+    public var userID: String {
+        get {
+            return appStorageService.getData(key: .apphudUserID) ?? ""
+        } set {
+            appStorageService.saveData(key: .apphudUserID, value: newValue)
+        }
+    }
+
     public init(historyService: IHistoryService,
                 networkService: INetworkService,
-                navigationModel: SelectNavigationModel) {
+                navigationModel: SelectNavigationModel,
+                appStorageService: IAppStorageService) {
         self.historyService = historyService
         self.networkService = networkService
         self.type = navigationModel.type
+        self.appStorageService = appStorageService
     }
 
     public func addSavedFile(_ model: SavedFilesModel) {

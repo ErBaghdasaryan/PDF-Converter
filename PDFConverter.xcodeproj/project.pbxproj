@@ -14,6 +14,8 @@
 		CCC8100A2DB0F6BC008186D1 /* PDFConverterModel in Frameworks */ = {isa = PBXBuildFile; productRef = CCC810092DB0F6BC008186D1 /* PDFConverterModel */; };
 		CCC8100C2DB0F6BC008186D1 /* PDFConverterViewModel in Frameworks */ = {isa = PBXBuildFile; productRef = CCC8100B2DB0F6BC008186D1 /* PDFConverterViewModel */; };
 		CCC812322DC12D15008186D1 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = CCC812312DC12D15008186D1 /* Toast */; };
+		CCC812352DC13DA9008186D1 /* ApphudSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CCC812342DC13DA9008186D1 /* ApphudSDK */; };
+		CCC812382DC13DBE008186D1 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = CCC812372DC13DBE008186D1 /* OneSignalFramework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +84,9 @@
 				CCC80FF82DB0F64E008186D1 /* SnapKit in Frameworks */,
 				CCC810002DB0F664008186D1 /* Swinject in Frameworks */,
 				CCC8100A2DB0F6BC008186D1 /* PDFConverterModel in Frameworks */,
+				CCC812352DC13DA9008186D1 /* ApphudSDK in Frameworks */,
 				CCC812322DC12D15008186D1 /* Toast in Frameworks */,
+				CCC812382DC13DBE008186D1 /* OneSignalFramework in Frameworks */,
 				CCC810052DB0F670008186D1 /* SwinjectAutoregistration in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -161,6 +165,8 @@
 				CCC810092DB0F6BC008186D1 /* PDFConverterModel */,
 				CCC8100B2DB0F6BC008186D1 /* PDFConverterViewModel */,
 				CCC812312DC12D15008186D1 /* Toast */,
+				CCC812342DC13DA9008186D1 /* ApphudSDK */,
+				CCC812372DC13DBE008186D1 /* OneSignalFramework */,
 			);
 			productName = PDFConverter;
 			productReference = CCC80FC02DB0F529008186D1 /* PDFConverter.app */;
@@ -250,6 +256,8 @@
 				CCC80FFE2DB0F664008186D1 /* XCRemoteSwiftPackageReference "Swinject" */,
 				CCC810032DB0F670008186D1 /* XCRemoteSwiftPackageReference "SwinjectAutoregistration" */,
 				CCC812302DC12D15008186D1 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				CCC812332DC13DA9008186D1 /* XCRemoteSwiftPackageReference "ApphudSDK" */,
+				CCC812362DC13DBE008186D1 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CCC80FC12DB0F529008186D1 /* Products */;
@@ -332,11 +340,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5PTH9U4CB9;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PDFConverter/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Magic PDF";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We want to use a camera so that you can take photos.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide personalized ads and improve your experience. For example, we may show you more relevant content and special offers based on your activity in the app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -346,7 +355,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aid.pdfconverteraaaaaaaaa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aid.pdfconverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -365,11 +374,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5PTH9U4CB9;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PDFConverter/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Magic PDF";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We want to use a camera so that you can take photos.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide personalized ads and improve your experience. For example, we may show you more relevant content and special offers based on your activity in the app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -379,7 +389,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aid.pdfconverteraaaaaaaaa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aid.pdfconverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -660,6 +670,22 @@
 				minimumVersion = 5.1.1;
 			};
 		};
+		CCC812332DC13DA9008186D1 /* XCRemoteSwiftPackageReference "ApphudSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apphud/ApphudSDK";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.2;
+			};
+		};
+		CCC812362DC13DBE008186D1 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OneSignal/OneSignal-XCFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.10;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -695,6 +721,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CCC812302DC12D15008186D1 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
 			productName = Toast;
+		};
+		CCC812342DC13DA9008186D1 /* ApphudSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC812332DC13DA9008186D1 /* XCRemoteSwiftPackageReference "ApphudSDK" */;
+			productName = ApphudSDK;
+		};
+		CCC812372DC13DBE008186D1 /* OneSignalFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC812362DC13DBE008186D1 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
+			productName = OneSignalFramework;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
