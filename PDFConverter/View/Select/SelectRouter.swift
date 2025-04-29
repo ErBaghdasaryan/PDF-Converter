@@ -34,4 +34,14 @@ final class SelectRouter: BaseRouter {
         viewController.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(viewController, animated: true)
     }
+
+    static func showPasswordViewController(in navigationController: UINavigationController, navigationModel: PasswordNavigationModel) {
+        let viewController = ViewControllerFactory.makePasswordViewController(navigationModel: navigationModel)
+        viewController.modalPresentationStyle = .formSheet
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+        }
+        navigationController.present(viewController, animated: true)
+    }
 }

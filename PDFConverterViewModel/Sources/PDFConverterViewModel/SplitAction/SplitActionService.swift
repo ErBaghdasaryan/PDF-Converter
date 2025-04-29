@@ -28,20 +28,23 @@ public class SplitActionService: ISplitActionService {
         let idColumn = Expression<Int>("id")
         let relativePathColumn = Expression<String>("relative_path")
         let typeColumn = Expression<String>("type")
+        let passwordColumn = Expression<String?>("password")
 
         try db.run(table.create(ifNotExists: true) { t in
             t.column(idColumn, primaryKey: .autoincrement)
             t.column(relativePathColumn)
             t.column(typeColumn)
+            t.column(passwordColumn)
         })
 
         let relativePath = model.fileURL.lastPathComponent
 
         let rowId = try db.run(table.insert(
             relativePathColumn <- relativePath,
-            typeColumn <- model.type.rawValue
+            typeColumn <- model.type.rawValue,
+            passwordColumn <- model.password
         ))
 
-        return SavedFilesModel(id: Int(rowId), pdfURL: model.fileURL, type: model.type)
+        return SavedFilesModel(id: Int(rowId), pdfURL: model.fileURL, type: model.type, password: model.password)
     }
 }

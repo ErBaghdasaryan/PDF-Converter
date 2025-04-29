@@ -1,19 +1,19 @@
 //
-//  PDFSignaturePlacementService.swift
+//  PasswordService.swift
 //  PDFConverterViewModel
 //
-//  Created by Er Baghdasaryan on 24.04.25.
+//  Created by Er Baghdasaryan on 29.04.25.
 //
 
 import UIKit
 import PDFConverterModel
 import SQLite
 
-public protocol IPDFSignaturePlacementService {
-    func addSavedFile(_ model: SavedFilesModel) throws -> SavedFilesModel
+public protocol IPasswordService {
+    func updateSavedFile(_ model: SavedFilesModel) throws
 }
 
-public class PDFSignaturePlacementService: IPDFSignaturePlacementService {
+public class PasswordService: IPasswordService {
 
     public init() { }
 
@@ -21,7 +21,11 @@ public class PDFSignaturePlacementService: IPDFSignaturePlacementService {
 
     typealias Expression = SQLite.Expression
 
-    public func addSavedFile(_ model: SavedFilesModel) throws -> SavedFilesModel {
+    public func updateSavedFile(_ model: SavedFilesModel) throws {
+        guard let id = model.id else {
+            throw NSError(domain: "Missing ID for update", code: 0)
+        }
+
         let db = try Connection("\(path)/db.sqlite3")
         let table = Table("SavedFiles")
 
@@ -30,21 +34,14 @@ public class PDFSignaturePlacementService: IPDFSignaturePlacementService {
         let typeColumn = Expression<String>("type")
         let passwordColumn = Expression<String?>("password")
 
-        try db.run(table.create(ifNotExists: true) { t in
-            t.column(idColumn, primaryKey: .autoincrement)
-            t.column(relativePathColumn)
-            t.column(typeColumn)
-            t.column(passwordColumn)
-        })
+        let itemToUpdate = table.filter(idColumn == id)
 
         let relativePath = model.fileURL.lastPathComponent
 
-        let rowId = try db.run(table.insert(
+        try db.run(itemToUpdate.update(
             relativePathColumn <- relativePath,
             typeColumn <- model.type.rawValue,
             passwordColumn <- model.password
         ))
-
-        return SavedFilesModel(id: Int(rowId), pdfURL: model.fileURL, type: model.type, password: model.password)
     }
 }

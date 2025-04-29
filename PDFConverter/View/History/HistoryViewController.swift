@@ -168,6 +168,41 @@ extension HistoryViewController {
         previewController.dataSource = self
         present(previewController, animated: true, completion: nil)
     }
+
+    private func openActionSheet(with indexPath: IndexPath, and collectionView: UICollectionView) {
+        let alert = UIAlertController(title: "Select Variant", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Preview", style: .default) { _ in
+            self.preview(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "To another format", style: .default) { _ in
+            self.setPageToMain()
+        })
+    
+        alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
+            self.share(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "Download", style: .default) { _ in
+            self.share(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.deletePDF(by: indexPath.row)
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        if let popoverController = alert.popoverPresentationController {
+            if let cell = collectionView.cellForItem(at: indexPath) {
+                popoverController.sourceView = cell
+                popoverController.sourceRect = cell.bounds
+            }
+        }
+
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 extension HistoryViewController: IViewModelableController {
@@ -206,38 +241,39 @@ extension HistoryViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Select Variant", message: nil, preferredStyle: .actionSheet)
+        let model = self.viewModel?.savedFiles[indexPath.row]
 
-        alert.addAction(UIAlertAction(title: "Preview", style: .default) { _ in
-            self.preview(by: indexPath.row)
-        })
+        guard let password = model?.password, model?.password != nil else {
+            openActionSheet(with: indexPath, and: collectionView)
+            return
+        }
 
-        alert.addAction(UIAlertAction(title: "To another format", style: .default) { _ in
-            self.setPageToMain()
-        })
-    
-        alert.addAction(UIAlertAction(title: "Share", style: .default) { _ in
-            self.share(by: indexPath.row)
-        })
+        let alertController = UIAlertController(title: "Enter Password", message: "This file is protected", preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: "Download", style: .default) { _ in
-            self.share(by: indexPath.row)
-        })
+        alertController.addTextField { textField in
+            textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
+            textField.keyboardType = .numberPad
+        }
 
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
-            self.deletePDF(by: indexPath.row)
-        })
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
-        if let popoverController = alert.popoverPresentationController {
-            if let cell = collectionView.cellForItem(at: indexPath) {
-                popoverController.sourceView = cell
-                popoverController.sourceRect = cell.bounds
+        let confirmAction = UIAlertAction(title: "OK", style: .default) { _ in
+            if let enteredPassword = alertController.textFields?.first?.text {
+                if enteredPassword == password {
+                    self.openActionSheet(with: indexPath, and: collectionView)
+                } else {
+                    let errorAlert = UIAlertController(title: "Incorrect Password", message: "The password you entered is incorrect.", preferredStyle: .alert)
+                    errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(errorAlert, animated: true)
+                }
             }
         }
 
-        present(alert, animated: true, completion: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+
+        self.present(alertController, animated: true)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

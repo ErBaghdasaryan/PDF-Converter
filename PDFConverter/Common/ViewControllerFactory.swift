@@ -109,6 +109,14 @@ final class ViewControllerFactory {
         return viewController
     }
 
+    //MARK: Password
+    static func makePasswordViewController(navigationModel: PasswordNavigationModel) -> PasswordViewController {
+        let assembler = Assembler(commonAssemblies + [PasswordAssembly()])
+        let viewController = PasswordViewController()
+        viewController.viewModel = assembler.resolver.resolve(IPasswordViewModel.self, argument: navigationModel)
+        return viewController
+    }
+
     //MARK: Settings
     static func makeSettingsViewController() -> SettingsViewController {
         let assembler = Assembler(commonAssemblies + [SettingsAssembly()])

@@ -154,7 +154,7 @@ extension SelectViewController {
         case .exelToPDF:
             return ["xls", "xlsx"].contains(fileExtension)
         case .imageToPDF:
-            return ["jpg", "jpeg", "png"].contains(fileExtension)
+            return ["jpg", "jpeg", "png", "heic"].contains(fileExtension)
         case .pdf, .textToImage, .split, .pdfToDoc, .signature:
             return fileExtension == "pdf"
         case .pointToPdf:
@@ -200,6 +200,7 @@ extension SelectViewController {
             self.showBadAlert(message: "Please select one of the existing files or add a new file before proceeding to the next page.")
             return
         }
+        guard let selectedFile = self.selectedFile else { return }
 
         switch type {
         case .wordToPDF:
@@ -217,7 +218,8 @@ extension SelectViewController {
         case .exelToPDF:
             print("exelToPDF")
         case .pdf:
-            print("pdf")
+            SelectRouter.showPasswordViewController(in: navigationController,
+                                                    navigationModel: .init(model: selectedFile))
         case .pointToPdf:
             print("pointToPdf")
         case .split:
