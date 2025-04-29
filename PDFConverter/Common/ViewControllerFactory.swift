@@ -101,6 +101,14 @@ final class ViewControllerFactory {
         return viewController
     }
 
+    //MARK: SplitAction
+    static func makeSplitActionViewController(navigationModel: SplitActionNavigationModel) -> SplitActionViewController {
+        let assembler = Assembler(commonAssemblies + [SplitActionAssembly()])
+        let viewController = SplitActionViewController()
+        viewController.viewModel = assembler.resolver.resolve(ISplitActionViewModel.self, argument: navigationModel)
+        return viewController
+    }
+
     //MARK: Settings
     static func makeSettingsViewController() -> SettingsViewController {
         let assembler = Assembler(commonAssemblies + [SettingsAssembly()])

@@ -11,8 +11,8 @@ import PDFConverterViewModel
 import PDFConverterModel
 
 final class SplitRouter: BaseRouter {
-    static func showPDFSignaturePlacementViewControllerViewController(in navigationController: UINavigationController, navigationModel: PDFSignaturePlacementServiceNavModel) {
-        let viewController = ViewControllerFactory.makePDFSignaturePlacementViewControllerViewController(navigationModel: navigationModel)
+    static func showSplitActionViewControllerViewController(in navigationController: UINavigationController, navigationModel: SplitActionNavigationModel) {
+        let viewController = ViewControllerFactory.makeSplitActionViewController(navigationModel: navigationModel)
         viewController.navigationItem.hidesBackButton = true
         navigationController.navigationBar.isHidden = false
         viewController.hidesBottomBarWhenPushed = true

@@ -13,7 +13,6 @@ import StoreKit
 class SplitViewController: BaseViewController {
 
     var viewModel: ViewModel?
-    private let nextButton = UIButton(type: .system)
     var collectionView: UICollectionView!
 
     override func viewDidLoad() {
@@ -25,24 +24,6 @@ class SplitViewController: BaseViewController {
         super.setupUI()
 
         self.view.backgroundColor = .white
-
-        self.nextButton.setTitle("Split", for: .normal)
-        self.nextButton.setTitleColor(.white, for: .normal)
-        self.nextButton.layer.cornerRadius = 12
-        self.nextButton.layer.masksToBounds = true
-        self.nextButton.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 15)
-
-        let buttonGradient = CAGradientLayer()
-        buttonGradient.colors = [
-            UIColor(hex: "#232120")!.cgColor,
-            UIColor(hex: "#565150")!.cgColor,
-            UIColor(hex: "#89817F")!.cgColor
-        ]
-        buttonGradient.startPoint = CGPoint(x: 0, y: 0.5)
-        buttonGradient.endPoint = CGPoint(x: 1, y: 0.5)
-        buttonGradient.locations = [0.0, 0.5, 1.0]
-        buttonGradient.cornerRadius = 20
-        nextButton.layer.insertSublayer(buttonGradient, at: 0)
 
         let mylayout = UICollectionViewFlowLayout()
         mylayout.itemSize = CGSize(width: self.view.frame.width, height: 52)
@@ -60,7 +41,6 @@ class SplitViewController: BaseViewController {
         collectionView.register(SplitCell.self)
 
         self.view.addSubview(collectionView)
-        self.view.addSubview(nextButton)
         setupConstraints()
         setupNavigationItems()
         self.setupViewTapHandling()
@@ -72,14 +52,6 @@ class SplitViewController: BaseViewController {
         self.collectionView.reloadData()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        if let gradientLayer = nextButton.layer.sublayers?.first as? CAGradientLayer {
-            gradientLayer.frame = nextButton.bounds
-        }
-    }
-
     func setupConstraints() {
 
         collectionView.snp.makeConstraints { view in
@@ -87,13 +59,6 @@ class SplitViewController: BaseViewController {
             view.leading.equalToSuperview().offset(16)
             view.trailing.equalToSuperview().inset(16)
             view.bottom.equalToSuperview().inset(480)
-        }
-
-        nextButton.snp.makeConstraints { view in
-            view.bottom.equalToSuperview().inset(51)
-            view.leading.equalToSuperview().offset(16)
-            view.trailing.equalToSuperview().inset(16)
-            view.height.equalTo(44)
         }
     }
 
@@ -103,12 +68,6 @@ class SplitViewController: BaseViewController {
 extension SplitViewController {
     
     private func makeButtonsAction() {
-        nextButton.addTarget(self, action: #selector(nextTapped), for: .touchUpInside)
-    }
-
-    @objc func nextTapped() {
-        guard let navigationController = self.navigationController else { return }
-        
     }
 
     private func setupNavigationItems() {
@@ -156,13 +115,16 @@ extension SplitViewController {
     }
 
     private func tappedCell(from index: Int) {
+        guard let navigationController = self.navigationController else { return }
+        guard let url = self.viewModel?.pdfURL else { return }
+
         switch index {
         case 0:
-            break
+            SplitRouter.showSplitActionViewControllerViewController(in: navigationController, navigationModel: .init(pdfURL: url, action: .divideByRange))
         case 1:
-            break
+            SplitRouter.showSplitActionViewControllerViewController(in: navigationController, navigationModel: .init(pdfURL: url, action: .fixedRange))
         case 2:
-            break
+            SplitRouter.showSplitActionViewControllerViewController(in: navigationController, navigationModel: .init(pdfURL: url, action: .deletePages))
         default:
             break
         }
