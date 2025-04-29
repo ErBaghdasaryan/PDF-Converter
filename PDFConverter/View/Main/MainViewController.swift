@@ -8,15 +8,29 @@
 import UIKit
 import PDFConverterViewModel
 import SnapKit
+import Toast
 
 class MainViewController: BaseViewController {
 
     var viewModel: ViewModel?
     var collectionView: UICollectionView!
 
+    var style = ToastStyle()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         makeButtonsAction()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUpdateNotification(_:)),
+            name: Notification.Name("HistoryUpdated"),
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func setupUI() {
@@ -42,6 +56,9 @@ class MainViewController: BaseViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        style.messageColor = UIColor(hex: "#F9F9F9")!
+        style.backgroundColor = UIColor(hex: "#22242C")!
 
         self.view.addSubview(collectionView)
         setupConstraints()
@@ -177,6 +194,10 @@ extension MainViewController {
 //        } else {
             MainRouter.showPaymentViewController(in: navigationController)
 //        }
+    }
+
+    @objc func handleUpdateNotification(_ notification: Notification) {
+        self.view.makeToast("The new conversion you created is already available in the History section.", duration: 2.0, position: .bottom)
     }
 }
 

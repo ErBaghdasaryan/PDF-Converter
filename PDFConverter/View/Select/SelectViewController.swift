@@ -104,6 +104,44 @@ class SelectViewController: BaseViewController {
             }
             self.collectionView.reloadData()
         }
+
+        self.viewModel?.timeOutSubject.sink { success in
+            DispatchQueue.main.async {
+                self.showBadAlert(message: "There is a problem, please try again.")
+            }
+        }.store(in: &cancellables)
+
+        self.viewModel?.createByMultipartSuccessSubject.sink { success in
+            if success {
+                guard let model = self.viewModel?.byMultipartResponse else { return }
+
+                self.viewModel?.startPollingForFileId(by: model.id)
+
+                DispatchQueue.main.async {
+                    self.showSuccessAlert(message: "You have successfully passed the convertation stage, and access to the recording will be available in the History section within the next five minutes.") {
+                        if let sceneDelegate = UIApplication.shared.connectedScenes
+                            .first?.delegate as? SceneDelegate {
+                            sceneDelegate.startTabBarFlow()
+                        }
+                    }
+                }
+
+            } else {
+                DispatchQueue.main.async {
+                    self.showBadAlert(message: "There is a problem, please try again.")
+                }
+            }
+        }.store(in: &cancellables)
+
+        self.viewModel?.getFileIDSuccessSubject.sink { model in
+
+            self.viewModel?.getFile(by: model.id)
+
+        }.store(in: &cancellables)
+
+        self.viewModel?.getFileSuccessSubject.sink { data in
+            self.chooseTypeAndSaveRequestData(data: data)
+        }.store(in: &cancellables)
     }
 
     override func viewDidLayoutSubviews() {
@@ -166,6 +204,59 @@ extension SelectViewController {
         }
     }
 
+    private func chooseTypeAndSaveRequestData(data: Data) {
+        switch self.conversionType {
+        case .pdfToDoc:
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsURL.appendingPathComponent("\(UUID()).doc")
+
+            do {
+                try data.write(to: fileURL)
+                self.viewModel?.addSavedFile(.init(pdfURL: fileURL, type: .pdfToDoc))
+            } catch {
+                print("Ошибка сохранения файла: \(error)")
+            }
+        case .exelToPDF:
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsURL.appendingPathComponent("\(UUID()).pdf")
+
+            do {
+                try data.write(to: fileURL)
+                self.viewModel?.addSavedFile(.init(pdfURL: fileURL, type: .exelToPDF))
+            } catch {
+                print("Ошибка сохранения файла: \(error)")
+            }
+        case .wordToPDF:
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsURL.appendingPathComponent("\(UUID()).pdf")
+
+            do {
+                try data.write(to: fileURL)
+                self.viewModel?.addSavedFile(.init(pdfURL: fileURL, type: .wordToPDF))
+            } catch {
+                print("Ошибка сохранения файла: \(error)")
+            }
+        case .pointToPdf:
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsURL.appendingPathComponent("\(UUID()).pdf")
+
+            do {
+                try data.write(to: fileURL)
+                self.viewModel?.addSavedFile(.init(pdfURL: fileURL, type: .pointToPdf))
+            } catch {
+                print("Ошибка сохранения файла: \(error)")
+            }
+        default:
+            break
+        }
+
+        NotificationCenter.default.post(
+            name: Notification.Name("HistoryUpdated"),
+            object: nil,
+            userInfo: nil
+        )
+    }
+
     private func uploadWithType() {
         guard let conversionType = self.conversionType else { return }
 
@@ -204,7 +295,15 @@ extension SelectViewController {
 
         switch type {
         case .wordToPDF:
-            print("wordToPDF")
+            let appBundle = "com.aid.pdfconverter"
+            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
+            if let exelURL = self.selectedFile?.fileURL {
+                self.viewModel?.createByMultipartRequest(userId: userID,
+                                                         appBundle: appBundle,
+                                                         convertTo: "pdf",
+                                                         password: nil,
+                                                         fileURL: exelURL)
+            }
         case .imageToPDF:
             if let imageURL = convertImageURLToPDF(pdfURl) {
                 self.viewModel?.addSavedFile(.init(pdfURL: imageURL, type: .imageToPDF))
@@ -216,17 +315,41 @@ extension SelectViewController {
                 }
             }
         case .exelToPDF:
-            print("exelToPDF")
+            let appBundle = "com.aid.pdfconverter"
+            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
+            if let exelURL = self.selectedFile?.fileURL {
+                self.viewModel?.createByMultipartRequest(userId: userID,
+                                                         appBundle: appBundle,
+                                                         convertTo: "pdf",
+                                                         password: nil,
+                                                         fileURL: exelURL)
+            }
         case .pdf:
             SelectRouter.showPasswordViewController(in: navigationController,
                                                     navigationModel: .init(model: selectedFile))
         case .pointToPdf:
-            print("pointToPdf")
+            let appBundle = "com.aid.pdfconverter"
+            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
+            if let exelURL = self.selectedFile?.fileURL {
+                self.viewModel?.createByMultipartRequest(userId: userID,
+                                                         appBundle: appBundle,
+                                                         convertTo: "pdf",
+                                                         password: nil,
+                                                         fileURL: exelURL)
+            }
         case .split:
             SelectRouter.showSplitViewController(in: navigationController,
                                                 navigationModel: .init(pdfURL: pdfURl))
         case .pdfToDoc:
-            print("pdfToDoc")
+            let appBundle = "com.aid.pdfconverter"
+            let userID = "4cf2e553-c8ad-4331-8ed0-0762aacd09c8"
+            if let exelURL = self.selectedFile?.fileURL {
+                self.viewModel?.createByMultipartRequest(userId: userID,
+                                                         appBundle: appBundle,
+                                                         convertTo: "doc",
+                                                         password: nil,
+                                                         fileURL: exelURL)
+            }
         case .textToImage:
             SelectRouter.showTextViewController(in: navigationController,
                                                 navigationModel: .init(pdfURL: pdfURl))

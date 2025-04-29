@@ -5,95 +5,135 @@
 //  Created by Er Baghdasaryan on 17.04.25.
 //
 
+import UIKit
 import PDFConverterModel
 import Combine
 
 public protocol INetworkService {
-//    func createByPromptRequest(userId: String, appBundle: String, prompt: String) async throws -> ResponseModel
-//    func createAdvancedRequest(model: AdvancedSendModel) async throws -> ResponseModel
-//    func getMusic(by musicID: UUID) -> AnyPublisher<ResponseModel, Error>
+    func createByMultipartRequest(userId: String, appBundle: String, convertTo: String, password: String?, fileURL: URL) async throws -> MultiPartResponseModel
+    func getFileID(by taskID: UUID) -> AnyPublisher<FileIDResponseModel, Error>
+    func getFile(by fileID: UUID) -> AnyPublisher<Data, Error>
 }
 
 public final class NetworkService: INetworkService {
 
     public init() { }
 
-//    public func createByPromptRequest(userId: String, appBundle: String, prompt: String) async throws -> ResponseModel {
-//        guard let url = URL(string: "https://backend.codecraftedsolutionss.shop/api/task/text") else { throw URLError(.badURL) }
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("4cf2e553-c8ad-4331-8ed0-0762aacd09c8", forHTTPHeaderField: "api-token")
-//
-//        var body: [String: Any] = [:]
-//        body["user_id"] = userId
-//        body["app_bundle"] = appBundle
-//        body["prompt"] = prompt
-//
-//        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
-//
-//        let (data, _) = try await URLSession.shared.data(for: request)
-//        if let jsonString = String(data: data, encoding: .utf8) {
-//                print("Ответ от сервера: \(jsonString)")
-//            }
-//        let result = try JSONDecoder().decode(ResponseModel.self, from: data)
-//        return result
-//    }
-//
-//    public func createAdvancedRequest(model: AdvancedSendModel) async throws -> ResponseModel {
-//        guard let url = URL(string: "https://backend.codecraftedsolutionss.shop/api/task/advanced") else { throw URLError(.badURL) }
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("4cf2e553-c8ad-4331-8ed0-0762aacd09c8", forHTTPHeaderField: "api-token")
-//
-//        var body: [String: Any] = [:]
-//        body["user_id"] = model.userID
-//        body["app_bundle"] = model.appBundle
-//        body["genre"] = model.genre
-//        body["duration"] = model.duration
-//        body["instruments"] = model.instruments
-//        body["genre_blend"] = model.genreBlend
-//        body["energy"] = model.energy
-//        body["structure_id"] = model.structureID
-//        body["bpm"] = model.bpm
-//        body["key_root"] = model.keyRoot
-//        body["key_quality"] = model.keyQuality
-//
-//        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
-//
-//        let (data, _) = try await URLSession.shared.data(for: request)
-//        if let jsonString = String(data: data, encoding: .utf8) {
-//                print("Ответ от сервера: \(jsonString)")
-//            }
-//        let result = try JSONDecoder().decode(ResponseModel.self, from: data)
-//        return result
-//    }
-//
-//    public func getMusic(by musicID: UUID) -> AnyPublisher<ResponseModel, Error> {
-//        let components = URLComponents(string: "https://backend.codecraftedsolutionss.shop/api/task/{\(musicID)}")
-//
-//        guard let url = components?.url else {
-//            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
-//        }
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.setValue("4cf2e553-c8ad-4331-8ed0-0762aacd09c8", forHTTPHeaderField: "api-token")
-//        request.timeoutInterval = 60
-//
-//        return URLSession.shared.dataTaskPublisher(for: request)
-//            .tryMap { data, response in
-//                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//                    throw URLError(.badServerResponse)
-//                }
-//                return data
-//            }
-//            .decode(type: ResponseModel.self, decoder: JSONDecoder())
-//            .receive(on: DispatchQueue.main)
-//            .eraseToAnyPublisher()
-//    }
+    public func createByMultipartRequest(
+        userId: String,
+        appBundle: String,
+        convertTo: String,
+        password: String?,
+        fileURL: URL
+    ) async throws -> MultiPartResponseModel {
 
+        var components = URLComponents(string: "https://backend.techinnovatorshubz.shop/api/task")!
+        components.queryItems = [
+            URLQueryItem(name: "convert_to", value: convertTo),
+            URLQueryItem(name: "password", value: password),
+            URLQueryItem(name: "app_bundle", value: appBundle),
+            URLQueryItem(name: "user_id", value: userId)
+        ]
+
+        guard let url = components.url else {
+            throw URLError(.badURL)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("183eed10-32e5-4a47-9542-8d28229bc3fb", forHTTPHeaderField: "api-token")
+
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        let fileData = try Data(contentsOf: fileURL)
+        let filename = fileURL.lastPathComponent
+        let mimeType: String
+
+        switch fileURL.pathExtension.lowercased() {
+        case "doc", "docx":
+            mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        case "xls", "xlsx":
+            mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        case "ppt", "pptx":
+            mimeType = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        default:
+            mimeType = "application/octet-stream"
+        }
+
+        var body = Data()
+        body.append("--\(boundary)\r\n")
+        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n")
+        body.append("Content-Type: \(mimeType)\r\n\r\n")
+        body.append(fileData)
+        body.append("\r\n")
+        body.append("--\(boundary)--\r\n")
+
+        request.httpBody = body
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print("Ответ от сервера: \(jsonString)")
+        }
+
+        return try JSONDecoder().decode(MultiPartResponseModel.self, from: data)
+    }
+
+
+    public func getFileID(by taskID: UUID) -> AnyPublisher<FileIDResponseModel, Error> {
+        let urlString = "https://backend.techinnovatorshubz.shop/api/task/\(taskID)"
+
+        guard let url = URL(string: urlString) else {
+            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("183eed10-32e5-4a47-9542-8d28229bc3fb", forHTTPHeaderField: "api-token")
+        request.timeoutInterval = 60
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                return data
+            }
+            .decode(type: FileIDResponseModel.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+
+    public func getFile(by fileID: UUID) -> AnyPublisher<Data, Error> {
+        let urlString = "https://backend.techinnovatorshubz.shop/api/task/\(fileID)/file"
+
+        guard let url = URL(string: urlString) else {
+            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("183eed10-32e5-4a47-9542-8d28229bc3fb", forHTTPHeaderField: "api-token")
+        request.timeoutInterval = 60
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                return data // просто возвращаем Data
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+
+}
+
+private extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
+    }
 }

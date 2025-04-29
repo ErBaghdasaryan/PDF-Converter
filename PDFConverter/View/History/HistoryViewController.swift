@@ -9,6 +9,7 @@ import UIKit
 import PDFConverterViewModel
 import SnapKit
 import QuickLook
+import Toast
 
 class HistoryViewController: BaseViewController {
 
@@ -19,9 +20,22 @@ class HistoryViewController: BaseViewController {
     var collectionView: UICollectionView!
     private var currentPreviewItem: URL?
 
+    var style = ToastStyle()
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         makeButtonsAction()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUpdateNotification(_:)),
+            name: Notification.Name("HistoryUpdated"),
+            object: nil
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +71,9 @@ class HistoryViewController: BaseViewController {
 
         collectionView.insetsLayoutMarginsFromSafeArea = false
 
+        style.messageColor = UIColor(hex: "#F9F9F9")!
+        style.backgroundColor = UIColor(hex: "#22242C")!
+
         self.view.addSubview(header)
         self.view.addSubview(collectionView)
         setupConstraints()
@@ -65,8 +82,6 @@ class HistoryViewController: BaseViewController {
 
     override func setupViewModel() {
         super.setupViewModel()
-//        self.viewModel?.loadFiles()
-//        self.collectionView.reloadData()
     }
 
     func setupConstraints() {
@@ -202,6 +217,10 @@ extension HistoryViewController {
         }
 
         present(alert, animated: true, completion: nil)
+    }
+
+    @objc func handleUpdateNotification(_ notification: Notification) {
+        self.view.makeToast("The conversion you created is already available, please refresh this page..", duration: 2.0, position: .bottom)
     }
 }
 
