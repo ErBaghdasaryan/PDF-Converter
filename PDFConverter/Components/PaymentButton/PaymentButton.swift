@@ -13,14 +13,14 @@ final class PaymentButton: UIButton {
                                 font: UIFont(name: "SFProText-Bold", size: 18))
     private let count = UILabel(text: "",
                                       textColor: UIColor(hex: "#22242C")!,
-                                      font: UIFont(name: "SFProText-Regular", size: 12))
+                                      font: UIFont(name: "SFProText-Semibold", size: 12))
     private let saveLabel = UILabel(text: "Save 60%",
                                     textColor: .white,
                                     font: UIFont(name: "SFProText-Regular", size: 12))
     private let whiteLine = UIView()
     private let perDuration = UILabel(text: "",
                                       textColor: UIColor(hex: "#22242C")!,
-                                      font: UIFont(name: "SFProText-Semibold", size: 12))
+                                      font: UIFont(name: "SFProText-Regular", size: 10))
 
     var isSelectedState: Bool {
         didSet {

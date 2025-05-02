@@ -343,11 +343,12 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PDFConverter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Magic PDF";
-				INFOPLIST_KEY_NSCameraUsageDescription = "We want to use a camera so that you can take photos.";
+				INFOPLIST_KEY_CFBundleDisplayName = "PDF Creator";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera so you can take photos of documents and convert them to PDF.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide personalized ads and improve your experience. For example, we may show you more relevant content and special offers based on your activity in the app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -363,7 +364,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -377,11 +378,12 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PDFConverter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Magic PDF";
-				INFOPLIST_KEY_NSCameraUsageDescription = "We want to use a camera so that you can take photos.";
+				INFOPLIST_KEY_CFBundleDisplayName = "PDF Creator";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera so you can take photos of documents and convert them to PDF.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide personalized ads and improve your experience. For example, we may show you more relevant content and special offers based on your activity in the app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -397,7 +399,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
