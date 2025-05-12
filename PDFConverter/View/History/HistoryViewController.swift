@@ -260,6 +260,10 @@ extension HistoryViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if self.viewModel?.savedFiles.isEmpty ?? true {
+            return
+        }
+
         let model = self.viewModel?.savedFiles[indexPath.row]
 
         guard let password = model?.password, model?.password != nil else {

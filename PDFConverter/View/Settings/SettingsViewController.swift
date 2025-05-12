@@ -125,9 +125,13 @@ extension SettingsViewController {
     }
 
     @objc func getProSubscription() {
-        guard let navigationController = self.navigationController else { return }
-
-        SettingsRouter.showPaymentViewController(in: navigationController)
+        let viewController = ViewControllerFactory.makePaymentViewController()
+        viewController.modalPresentationStyle = .formSheet
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        self.present(viewController, animated: true)
     }
 
     private func configureCorners(for cell: UICollectionViewCell, indexPath: IndexPath) {

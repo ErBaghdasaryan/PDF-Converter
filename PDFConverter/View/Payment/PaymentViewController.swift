@@ -290,6 +290,8 @@ extension PaymentViewController {
                     navigationController.popViewController(animated: true)
                 }
             }
+        } else {
+            self.dismiss(animated: true)
         }
     }
     

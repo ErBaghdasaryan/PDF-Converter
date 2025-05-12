@@ -454,6 +454,9 @@ extension SelectViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if self.collectionViewDataSource.isEmpty {
+            return
+        }
         if let previousIndex = selectedIndex,
            let previousCell = collectionView.cellForItem(at: previousIndex) as? SelectFileCollectionViewCell {
             previousCell.updateSelectionState(isSelected: false)
