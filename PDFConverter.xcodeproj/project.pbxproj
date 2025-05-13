@@ -36,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CCB8AC462DD40E46005AA073 /* PDF Converter - StoreKit.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "PDF Converter - StoreKit.storekit"; sourceTree = "<group>"; };
 		CCC80FC02DB0F529008186D1 /* PDFConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC80FD62DB0F52B008186D1 /* PDFConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC80FE02DB0F52B008186D1 /* PDFConverterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFConverterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +112,7 @@
 		CCC80FB72DB0F529008186D1 = {
 			isa = PBXGroup;
 			children = (
+				CCB8AC462DD40E46005AA073 /* PDF Converter - StoreKit.storekit */,
 				CCC80FF52DB0F5D9008186D1 /* PDFConverterViewModel */,
 				CCC80FF42DB0F59A008186D1 /* PDFConverterModel */,
 				CCC80FC22DB0F529008186D1 /* PDFConverter */,
