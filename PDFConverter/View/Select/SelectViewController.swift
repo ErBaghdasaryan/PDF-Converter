@@ -383,6 +383,14 @@ extension SelectViewController {
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX,
+                                                  y: self.view.bounds.maxY - 100,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
         present(alert, animated: true, completion: nil)
     }
 

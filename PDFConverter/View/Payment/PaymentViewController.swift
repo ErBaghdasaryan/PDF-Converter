@@ -307,7 +307,10 @@ extension PaymentViewController {
     
     @objc func continueButtonTaped() {
         if let navigationController = self.navigationController {
-            guard let currentProduct = self.currentProduct else { return }
+            guard let currentProduct = self.currentProduct else {
+                self.showBadAlert(message: "Please, first, choose which plan you want to move forward on, just click")
+                return
+            }
             
             startPurchase(product: currentProduct) { result in
                 let viewControllers = navigationController.viewControllers
