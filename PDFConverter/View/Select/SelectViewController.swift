@@ -260,28 +260,37 @@ extension SelectViewController {
     private func uploadWithType() {
         guard let conversionType = self.conversionType else { return }
 
-        let supportedTypes: [UTType]
-
         switch conversionType {
-        case .wordToPDF:
-            supportedTypes = [UTType(filenameExtension: "doc")!, UTType(filenameExtension: "docx")!]
-        case .exelToPDF:
-            supportedTypes = [UTType(filenameExtension: "xls")!, UTType(filenameExtension: "xlsx")!]
-        case .pdf, .split, .pdfToDoc, .textToImage, .signature:
-            supportedTypes = [UTType.pdf]
-        case .pointToPdf:
-            supportedTypes = [UTType(filenameExtension: "ppt")!, UTType(filenameExtension: "pptx")!]
-        case .pngToPdf:
-            supportedTypes = [UTType.png]
-        case .jpegToPDF:
-            supportedTypes = [UTType.jpeg, UTType(filenameExtension: "jpg")!]
-        case .imageToPDF:
-            supportedTypes = [UTType.jpeg, UTType(filenameExtension: "jpg")!, UTType.png]
+        case .jpegToPDF, .pngToPdf, .imageToPDF:
+
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.mediaTypes = ["public.image"]
+            present(imagePicker, animated: true, completion: nil)
+
+        default:
+
+            let supportedTypes: [UTType]
+
+            switch conversionType {
+            case .wordToPDF:
+                supportedTypes = [UTType(filenameExtension: "doc")!, UTType(filenameExtension: "docx")!]
+            case .exelToPDF:
+                supportedTypes = [UTType(filenameExtension: "xls")!, UTType(filenameExtension: "xlsx")!]
+            case .pdf, .split, .pdfToDoc, .textToImage, .signature:
+                supportedTypes = [UTType.pdf]
+            case .pointToPdf:
+                supportedTypes = [UTType(filenameExtension: "ppt")!, UTType(filenameExtension: "pptx")!]
+            default:
+                supportedTypes = [UTType.data]
+            }
+
+            let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
+            documentPicker.delegate = self
+            documentPicker.allowsMultipleSelection = false
+            present(documentPicker, animated: true, completion: nil)
         }
-        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
-        documentPicker.delegate = self
-        documentPicker.allowsMultipleSelection = false
-        present(documentPicker, animated: true, completion: nil)
     }
 
     @objc func nextButtonTapped() {
@@ -493,6 +502,23 @@ extension SelectViewController: UIDocumentPickerDelegate {
 
         let newSavedFile = SavedFilesModel(id: UUID().hashValue,
                                            pdfURL: url,
+                                           type: self.conversionType ?? .pdf)
+        self.collectionViewDataSource.append(newSavedFile)
+        self.collectionView.reloadData()
+    }
+}
+
+extension SelectViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        picker.dismiss(animated: true, completion: nil)
+
+        guard let imageURL = info[.imageURL] as? URL else {
+            return
+        }
+
+        let newSavedFile = SavedFilesModel(id: UUID().hashValue,
+                                           pdfURL: imageURL,
                                            type: self.conversionType ?? .pdf)
         self.collectionViewDataSource.append(newSavedFile)
         self.collectionView.reloadData()
