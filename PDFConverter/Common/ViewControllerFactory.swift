@@ -125,6 +125,14 @@ final class ViewControllerFactory {
         return viewController
     }
 
+    //MARK: Rate
+    static func makeRateViewController() -> RateViewController {
+        let assembler = Assembler(commonAssemblies + [RateAssembly()])
+        let viewController = RateViewController()
+        viewController.viewModel = assembler.resolver.resolve(IRateViewModel.self)
+        return viewController
+    }
+
     //MARK: PrivacyPolicy
     static func makePrivacyViewController() -> PrivacyViewController {
         let viewController = PrivacyViewController()

@@ -144,6 +144,25 @@ extension TabBarViewController: UIImagePickerControllerDelegate {
 extension TabBarViewController {
 
     @objc private func openCamera() {
+        let defaults = UserDefaults.standard
+        var count = defaults.integer(forKey: "cameraEntryCount")
+        let hasRated = defaults.bool(forKey: "hasRated")
+
+        count += 1
+        defaults.set(count, forKey: "cameraEntryCount")
+
+        let shouldShowRate = !hasRated && (count == 1 || count % 6 == 0)
+
+        if shouldShowRate {
+            TabBarRouter.showRateViewController(in: self) {
+                self.showCamera()
+            }
+        } else {
+            showCamera()
+        }
+    }
+
+    private func showCamera() {
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             print("Camera is not found.")
             return
@@ -154,7 +173,7 @@ extension TabBarViewController {
         imagePicker.sourceType = .camera
         imagePicker.allowsEditing = false
 
-        present(imagePicker, animated: true)
+        self.present(imagePicker, animated: true)
     }
 
     private func updateTabBarBorderLayer() {

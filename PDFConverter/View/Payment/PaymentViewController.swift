@@ -15,7 +15,7 @@ class PaymentViewController: BaseViewController {
     var viewModel: ViewModel?
 
     private let background = UIImageView(image: UIImage(named: "paymentBG"))
-    private let bottomView = UIView()
+    private let bottomView = UIImageView(image: UIImage(named: "paymentBlur"))
     private let header = UILabel(text: "Unlock",
                                  textColor: .black,
                                  font: UIFont(name: "SFProText-Bold", size: 34))
@@ -28,10 +28,6 @@ class PaymentViewController: BaseViewController {
 
     private let continueButton = UIButton(type: .system)
     private let maybeLater = UILabel()
-    private let terms = UIButton(type: .system)
-    private let privacy = UIButton(type: .system)
-    private let restore = UIButton(type: .system)
-    private var buttonsStack: UIStackView!
     private let cancele = UIButton(type: .system)
 
     private let weeklyButton = PaymentButton(type: .weekly)
@@ -59,7 +55,7 @@ class PaymentViewController: BaseViewController {
     override func setupUI() {
         super.setupUI()
 
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .clear
 
         self.continueButton.setTitle("Continue", for: .normal)
         self.continueButton.setTitleColor(.white, for: .normal)
@@ -69,25 +65,6 @@ class PaymentViewController: BaseViewController {
 
         self.bottomView.layer.masksToBounds = true
         self.bottomView.layer.cornerRadius = 16
-
-        self.privacy.setTitle("Privacy policy", for: .normal)
-        self.privacy.setTitleColor(UIColor(hex: "#22242C")!.withAlphaComponent(0.7), for: .normal)
-        self.privacy.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 12)
-
-        self.terms.setTitle("Terms of Use", for: .normal)
-        self.terms.setTitleColor(UIColor(hex: "#22242C")!.withAlphaComponent(0.7), for: .normal)
-        self.terms.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 12)
-
-        self.restore.setTitle("Restore purchases", for: .normal)
-        self.restore.setTitleColor(UIColor(hex: "#22242C")!.withAlphaComponent(0.7), for: .normal)
-        self.restore.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 12)
-
-        self.buttonsStack = UIStackView(arrangedSubviews: [terms,
-                                                           privacy,
-                                                           restore],
-                                        axis: .horizontal,
-                                        spacing: 0)
-        self.buttonsStack.distribution = .fillEqually
 
         let image = UIImage(named: "cancelAnytime")
         let attachment = NSTextAttachment()
@@ -107,25 +84,13 @@ class PaymentViewController: BaseViewController {
         self.cancele.setImage(UIImage(named: "ntfBack"), for: .normal)
         self.cancele.isHidden = true
 
-        self.paymenButtons = UIStackView(arrangedSubviews: [weeklyButton, yearlyButton],
-                                        axis: .horizontal,
-                                        spacing: 16)
+        self.paymenButtons = UIStackView(arrangedSubviews: [yearlyButton, weeklyButton],
+                                        axis: .vertical,
+                                        spacing: 8)
         self.paymenButtons.distribution = .fillEqually
 
         self.subheader.numberOfLines = 0
         self.subheader.lineBreakMode = .byWordWrapping
-
-        let bottomViewGradient = CAGradientLayer()
-        bottomViewGradient.colors = [
-            UIColor(white: 0.976, alpha: 0.6).cgColor,
-            UIColor(white: 0.976, alpha: 0.8).cgColor,
-            UIColor(white: 0.976, alpha: 0.8).cgColor
-        ]
-        bottomViewGradient.locations = [0.0, 0.5, 1.0]
-        bottomViewGradient.startPoint = CGPoint(x: 0.5, y: 0.0)
-        bottomViewGradient.endPoint = CGPoint(x: 0.5, y: 1.0)
-        bottomView.layer.insertSublayer(bottomViewGradient, at: 0)
-        bottomView.tag = 999
 
         subheader.numberOfLines = 0
         subheader.lineBreakMode = .byWordWrapping
@@ -151,17 +116,11 @@ class PaymentViewController: BaseViewController {
         self.view.addSubview(paymenButtons)
         self.view.addSubview(continueButton)
         self.view.addSubview(maybeLater)
-        self.view.addSubview(buttonsStack)
         setupConstraints()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        if let gradientView = self.view.viewWithTag(999),
-           let gradientLayer = gradientView.layer.sublayers?.first as? CAGradientLayer {
-            gradientLayer.frame = gradientView.bounds
-        }
 
         if let gradientLayer = continueButton.layer.sublayers?.first as? CAGradientLayer {
             gradientLayer.frame = continueButton.bounds
@@ -185,7 +144,7 @@ class PaymentViewController: BaseViewController {
             view.bottom.equalToSuperview()
             view.leading.equalToSuperview()
             view.trailing.equalToSuperview()
-            view.height.equalTo(454)
+            view.height.equalTo(436)
         }
 
         cancele.snp.makeConstraints { view in
@@ -207,7 +166,7 @@ class PaymentViewController: BaseViewController {
             view.leading.equalToSuperview().offset(16)
             view.trailing.equalToSuperview().inset(16)
             view.height.equalTo(34)
-        }
+        } 
 
         subheader.snp.makeConstraints { view in
             view.top.equalTo(header1.snp.bottom).offset(8)
@@ -220,28 +179,21 @@ class PaymentViewController: BaseViewController {
             view.top.equalTo(subheader.snp.bottom).offset(16)
             view.leading.equalToSuperview().offset(16)
             view.trailing.equalToSuperview().inset(16)
-            view.height.equalTo(122)
+            view.height.equalTo(130)
         }
 
         continueButton.snp.makeConstraints { view in
-            view.bottom.equalToSuperview().inset(112)
+            view.bottom.equalToSuperview().inset(42)
             view.leading.equalToSuperview().offset(16)
             view.trailing.equalToSuperview().inset(16)
             view.height.equalTo(44)
         }
 
         maybeLater.snp.makeConstraints { view in
-            view.top.equalTo(continueButton.snp.bottom).offset(12)
+            view.bottom.equalTo(continueButton.snp.top).inset(-10)
             view.leading.equalToSuperview().offset(16)
             view.trailing.equalToSuperview().inset(16)
             view.height.equalTo(32)
-        }
-
-        buttonsStack.snp.makeConstraints { view in
-            view.bottom.equalToSuperview().inset(42)
-            view.leading.equalToSuperview().offset(16)
-            view.trailing.equalToSuperview().inset(16)
-            view.height.equalTo(14)
         }
     }
 
@@ -252,9 +204,6 @@ extension PaymentViewController {
     
     private func makeButtonsAction() {
         continueButton.addTarget(self, action: #selector(continueButtonTaped), for: .touchUpInside)
-        restore.addTarget(self, action: #selector(restoreTapped), for: .touchUpInside)
-        privacy.addTarget(self, action: #selector(privacyTapped), for: .touchUpInside)
-        terms.addTarget(self, action: #selector(termsTapped), for: .touchUpInside)
         cancele.addTarget(self, action: #selector(cancelTaped), for: .touchUpInside)
         yearlyButton.addTarget(self, action: #selector(planAction(_:)), for: .touchUpInside)
         weeklyButton.addTarget(self, action: #selector(planAction(_:)), for: .touchUpInside)
@@ -294,17 +243,7 @@ extension PaymentViewController {
             self.dismiss(animated: true)
         }
     }
-    
-    @objc func privacyTapped() {
-        guard let navigationController = self.navigationController else { return }
-        PaymentRouter.showPrivacyViewController(in: navigationController)
-    }
-    
-    @objc func termsTapped() {
-        guard let navigationController = self.navigationController else { return }
-        PaymentRouter.showTermsViewController(in: navigationController)
-    }
-    
+
     @objc func continueButtonTaped() {
         if let navigationController = self.navigationController {
             guard let currentProduct = self.currentProduct else {
@@ -329,32 +268,7 @@ extension PaymentViewController {
             }
         }
     }
-    
-    @objc func restoreTapped() {
-        guard let navigationController = self.navigationController else { return }
-        self.restorePurchase { result in
-            if result {
-                self.showSuccessAlert(message: "You have successfully restored your purchases.")
-            } else {
-                self.showBadAlert(message: "Your purchase could not be restored. Please try again later.")
-            }
-        }
-        
-        let viewControllers = navigationController.viewControllers
-        
-        if let currentIndex = viewControllers.firstIndex(of: self), currentIndex > 0 {
-            let previousViewController = viewControllers[currentIndex - 1]
-            
-            if previousViewController is NotificationViewController {
-                PaymentRouter.showTabBarViewController(in: navigationController)
-            } else {
-                navigationController.navigationBar.isHidden = false
-                navigationController.navigationItem.hidesBackButton = false
-                navigationController.popViewController(animated: true)
-            }
-        }
-    }
-    
+
     @MainActor
     public func startPurchase(product: ApphudProduct, escaping: @escaping(Bool) -> Void) {
         let selectedProduct = product
@@ -375,23 +289,7 @@ extension PaymentViewController {
             }
         }
     }
-    
-    @MainActor
-    public func restorePurchase(escaping: @escaping(Bool) -> Void) {
-        Apphud.restorePurchases { subscriptions, _, error in
-            if let error = error {
-                print(error.localizedDescription)
-                escaping(false)
-            }
-            if subscriptions?.first?.isActive() ?? false {
-                escaping(true)
-            }
-            if Apphud.hasActiveSubscription() {
-                escaping(true)
-            }
-        }
-    }
-    
+
     @MainActor
     public func loadPaywalls() {
         Apphud.paywallsDidLoadCallback { paywalls, error in
@@ -400,6 +298,11 @@ extension PaymentViewController {
             } else if let paywall = paywalls.first(where: { $0.identifier == self.paywallID }) {
                 Apphud.paywallShown(paywall)
                 self.productsAppHud = paywall.products
+
+                self.yearlyButton.isSelectedState = true
+                self.weeklyButton.isSelectedState = false
+                self.currentProduct = self.productsAppHud[1]
+
                 print("Продукты успешно загружены: \(self.productsAppHud)")
             } else {
                 print("Paywall с идентификатором \(self.paywallID) не найден.")
