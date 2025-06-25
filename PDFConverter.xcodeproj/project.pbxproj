@@ -345,7 +345,7 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PDFConverter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "PDF Creator";
+				INFOPLIST_KEY_CFBundleDisplayName = "PDF Converter";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera so you can take photos of documents and convert them to PDF.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "App requires access to your photo library to select images.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide personalized ads and improve your experience. For example, we may show you more relevant content and special offers based on your activity in the app.";
@@ -381,7 +381,7 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PDFConverter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "PDF Creator";
+				INFOPLIST_KEY_CFBundleDisplayName = "PDF Converter";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera so you can take photos of documents and convert them to PDF.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "App requires access to your photo library to select images.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to provide personalized ads and improve your experience. For example, we may show you more relevant content and special offers based on your activity in the app.";
